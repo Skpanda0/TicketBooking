@@ -9,7 +9,8 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 5000; // ✅ Use Render's dynamic port
+// ✅ Use Render’s dynamic port (do NOT hardcode 10000)
+const PORT = process.env.PORT || 5000; 
 
 // Check if something is already running on the port
 server.on('error', (err) => {
@@ -19,7 +20,7 @@ server.on('error', (err) => {
   }
 });
 
-// Ensure WebSocket runs only once
+// ✅ Ensure only one WebSocket instance
 if (!global.io) {
   global.io = socketIo(server, {
     cors: {
@@ -36,7 +37,7 @@ if (!global.io) {
   });
 }
 
-// ✅ Close any previous server before restarting (Prevents multiple instances)
+// ✅ Close previous instance before restarting
 if (server.listening) {
   console.log("⚠️ Closing previous instance before restarting...");
   server.close();
@@ -63,7 +64,7 @@ app.use(reservedSeatsRoutes);
 app.use(getSeats);
 app.use(userBookings);
 
-// ✅ Graceful shutdown on restart
+// ✅ Graceful shutdown for Render restarts
 process.on('SIGTERM', () => {
   console.log('🚀 Gracefully shutting down...');
   server.close(() => {
@@ -72,7 +73,7 @@ process.on('SIGTERM', () => {
   });
 });
 
-// Start the server
+// ✅ Start the server using the dynamic port
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
