@@ -1,0 +1,53 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Logs
+logs
+*.log
+logs/*
+debug.log
+debug/
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+*.tgz
+
+# Build files
+dist/
+build/
+.tmp/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Dependency directories
+/coverage
+/.parcel-cache
+/.next
+/.turbo
+/out
+
+# Optional: Ignore compiled TypeScript files
+*.tsbuildinfo
+

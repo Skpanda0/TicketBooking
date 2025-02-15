@@ -1,0 +1,313 @@
+[
+  {
+      "city": "Berhampur",
+      "movie": [
+          {
+              "name": "Pushpa: The Rule - Part 2",
+              "halls": [
+                  {"name": "Gautam Cinema A/C Dolby Digital 2K: Berhampur", "seats": 200},
+                  {"name": "Rukmini Theatre (Central A/C, 2K, Dolby Digital)", "seats": 150},
+                  {"name": "PJ Movies (Payal Talkies): Berhampur", "seats": 180}
+              ]
+          },
+          {
+            "name": "Daman",
+            "halls": [
+                {"name": "Gautam Cinema A/C Dolby Digital 2K: Berhampur", "seats": 200},
+                {"name": "Rukmini Theatre (Central A/C, 2K, Dolby Digital)", "seats": 150}
+            ]
+        },
+        {
+          "name": "Jailer",
+          "halls": [
+              {"name": "Gautam Cinema A/C Dolby Digital 2K: Berhampur", "seats": 200},
+              {"name": "Rukmini Theatre (Central A/C, 2K, Dolby Digital)", "seats": 150}
+          ]
+      },
+          {
+              "name": "RRR",
+              "halls": [
+                  {"name": "Gautam Cinema A/C Dolby Digital 2K: Berhampur", "seats": 200},
+                  {"name": "Rukmini Theatre (Central A/C, 2K, Dolby Digital)", "seats": 150}
+              ]
+          }
+      ]
+  },
+  {
+      "city": "Mumbai",
+      "movie": [
+          {
+              "name": "Pushpa: The Rule - Part 2",
+              "halls": [
+                  {"name": "Aman Theatre: Ulhasnagar", "seats": 220},
+                  {"name": "Ashok Anil Multiplex, Miraj Cinemas: Ulhasnagar", "seats": 300},
+                  {"name": "BMX Cinemas: Ambernath (New)", "seats": 250},
+                  {"name": "Miraj Cinemas, Star: Ambernath", "seats": 230},
+                  {"name": "Gold Cinema: Malad Malvani", "seats": 180},
+                  {"name": "INOX: Megaplex, Inorbit Mall, Malad", "seats": 350},
+                  {"name": "INOX: Thakur Mall, Dahisar", "seats": 280},
+                  {"name": "KT Vision Cinema: Vasai (Screens)", "seats": 200},
+                  {"name": "Maison PVR: Jio World Drive, Mumbai", "seats": 400},
+                  {"name": "Maxus Cinemas: Bhayander", "seats": 260},
+                  {"name": "Miraj Anupam Cinemas: Goregaon (E)", "seats": 240},
+                  {"name": "PVR: Dynamix, Juhu", "seats": 320},
+                  {"name": "PVR: Infiniti, Malad Mumbai", "seats": 300},
+                  {"name": "Metro INOX Cinemas: Marine Lines", "seats": 290}
+              ]
+          },
+          {
+              "name": "Avatar 3",
+              "halls": [
+                  {"name": "INOX: Megaplex, Inorbit Mall, Malad", "seats": 350},
+                  {"name": "PVR: Dynamix, Juhu", "seats": 320},
+                  {"name": "Metro INOX Cinemas: Marine Lines", "seats": 290},
+                  {"name": "Maison PVR: Jio World Drive, Mumbai", "seats": 400}
+              ]
+          },
+          {
+            "name": "The Batman",
+            "halls": [
+                {"name": "Aman Theatre: Ulhasnagar", "seats": 220},
+                {"name": "Ashok Anil Multiplex, Miraj Cinemas: Ulhasnagar", "seats": 300},
+                {"name": "BMX Cinemas: Ambernath (New)", "seats": 250},
+                {"name": "Miraj Cinemas, Star: Ambernath", "seats": 230},
+                {"name": "Gold Cinema: Malad Malvani", "seats": 180},
+                {"name": "INOX: Megaplex, Inorbit Mall, Malad", "seats": 350},
+                {"name": "INOX: Thakur Mall, Dahisar", "seats": 280}
+               
+            ]
+        },
+        {
+          "name": "Vanvaas",
+          "halls": [
+              
+              {"name": "BMX Cinemas: Ambernath (New)", "seats": 250},
+              {"name": "Miraj Cinemas, Star: Ambernath", "seats": 230},
+              {"name": "Gold Cinema: Malad Malvani", "seats": 180},
+             
+              {"name": "KT Vision Cinema: Vasai (Screens)", "seats": 200},
+              {"name": "Maison PVR: Jio World Drive, Mumbai", "seats": 400},
+              {"name": "Maxus Cinemas: Bhayander", "seats": 260},
+              {"name": "Miraj Anupam Cinemas: Goregaon (E)", "seats": 240},
+              {"name": "PVR: Dynamix, Juhu", "seats": 320},
+              {"name": "PVR: Infiniti, Malad Mumbai", "seats": 300},
+              {"name": "Metro INOX Cinemas: Marine Lines", "seats": 290}
+          ]
+      },
+      {
+        "name": "Jailer",
+        "halls": [
+            {"name": "Aman Theatre: Ulhasnagar", "seats": 220},
+            {"name": "Ashok Anil Multiplex, Miraj Cinemas: Ulhasnagar", "seats": 300},
+            {"name": "BMX Cinemas: Ambernath (New)", "seats": 250},
+            {"name": "Miraj Cinemas, Star: Ambernath", "seats": 230},
+            {"name": "Gold Cinema: Malad Malvani", "seats": 180},
+            
+            {"name": "KT Vision Cinema: Vasai (Screens)", "seats": 200},
+            {"name": "Maison PVR: Jio World Drive, Mumbai", "seats": 400},
+            {"name": "Maxus Cinemas: Bhayander", "seats": 260},
+            
+            {"name": "Metro INOX Cinemas: Marine Lines", "seats": 290}
+        ]
+    },
+    {
+      "name": "Demon Slayer: Kimetsu no Yaiba - The Movie: Mugen Train",
+      "halls": [
+          
+          {"name": "Maison PVR: Jio World Drive, Mumbai", "seats": 400},
+          {"name": "Maxus Cinemas: Bhayander", "seats": 260},
+          {"name": "Miraj Anupam Cinemas: Goregaon (E)", "seats": 240}
+         
+      ]
+  },
+  {
+    "name": "Jujutsu Kaisen 0",
+    "halls": [
+        {"name": "Aman Theatre: Ulhasnagar", "seats": 220},
+        {"name": "Ashok Anil Multiplex, Miraj Cinemas: Ulhasnagar", "seats": 300},
+        {"name": "BMX Cinemas: Ambernath (New)", "seats": 250},
+        {"name": "Miraj Cinemas, Star: Ambernath", "seats": 230},
+        {"name": "Gold Cinema: Malad Malvani", "seats": 180},
+        
+        {"name": "KT Vision Cinema: Vasai (Screens)", "seats": 200},
+        {"name": "Maison PVR: Jio World Drive, Mumbai", "seats": 400},
+        {"name": "Maxus Cinemas: Bhayander", "seats": 260},
+        
+        {"name": "Metro INOX Cinemas: Marine Lines", "seats": 290}
+    ]
+}
+  
+      ]
+  },
+  {
+      "city": "Delhi",
+      "movie": [
+          {
+              "name": "Pushpa: The Rule - Part 2",
+              "halls": [
+                  {"name": "Bhutani Cineplex: World Square Mall", "seats": 300},
+                  {"name": "INOX: Shipra Mall, Ghaziabad", "seats": 270},
+                  {"name": "MovieMax: Pacific Mall Ghaziabad", "seats": 250},
+                  {"name": "PVR: EDM, Ghaziabad", "seats": 320},
+                  {"name": "PVR: VVIP, Ghaziabad", "seats": 280},
+                  {"name": "RR Cinema: Jaipuria Mall, Indirapuram", "seats": 200},
+                  {"name": "US Cinemas: Eros Mall, Indirapuram", "seats": 220},
+                  {"name": "Wave Cinemas: Gaur Central Mall, RDC", "seats": 350},
+                  {"name": "Amba Cinema: Delhi", "seats": 300},
+                  {"name": "Chand Miraj Cinemas: Mayur Vihar Phase 1", "seats": 180},
+                  {"name": "Cinepolis: Cross River Mall, Shahdara", "seats": 290},
+                  {"name": "Cinepolis: Unity One Mall Rohini, Delhi", "seats": 240},
+                  {"name": "INOX: Janak Place", "seats": 260},
+                  {"name": "INOX: Pacific Mall, Jasola", "seats": 300},
+                  {"name": "PVR Promenade: Vasant Kunj", "seats": 350}
+              ]
+          },
+          {
+              "name": "KGF: Chapter 2",
+              "halls": [
+                  {"name": "Wave Cinemas: Gaur Central Mall, RDC", "seats": 350},
+                  {"name": "PVR Promenade: Vasant Kunj", "seats": 350}
+              ]
+          },
+          {
+            "name": "Jailer",
+            "halls": [
+                {"name": "Bhutani Cineplex: World Square Mall", "seats": 300},
+                {"name": "INOX: Shipra Mall, Ghaziabad", "seats": 270},
+                {"name": "MovieMax: Pacific Mall Ghaziabad", "seats": 250},
+                {"name": "PVR: EDM, Ghaziabad", "seats": 320},
+                {"name": "PVR: VVIP, Ghaziabad", "seats": 280},
+                {"name": "RR Cinema: Jaipuria Mall, Indirapuram", "seats": 200},
+                {"name": "US Cinemas: Eros Mall, Indirapuram", "seats": 220},
+                
+                {"name": "INOX: Janak Place", "seats": 260},
+                {"name": "INOX: Pacific Mall, Jasola", "seats": 300},
+                {"name": "PVR Promenade: Vasant Kunj", "seats": 350}
+            ]
+        },
+        {
+          "name": "Vanvaas",
+          "halls": [
+              {"name": "Bhutani Cineplex: World Square Mall", "seats": 300},
+              {"name": "INOX: Shipra Mall, Ghaziabad", "seats": 270},
+              
+              {"name": "RR Cinema: Jaipuria Mall, Indirapuram", "seats": 200},
+              {"name": "US Cinemas: Eros Mall, Indirapuram", "seats": 220},
+              
+              {"name": "INOX: Janak Place", "seats": 260},
+              {"name": "INOX: Pacific Mall, Jasola", "seats": 300},
+              {"name": "PVR Promenade: Vasant Kunj", "seats": 350}
+          ]
+      },
+      {
+        "name": "The Batman",
+        "halls": [
+            {"name": "Bhutani Cineplex: World Square Mall", "seats": 300},
+            {"name": "INOX: Shipra Mall, Ghaziabad", "seats": 270},
+            {"name": "MovieMax: Pacific Mall Ghaziabad", "seats": 250},
+            {"name": "PVR: EDM, Ghaziabad", "seats": 320},
+            {"name": "PVR: VVIP, Ghaziabad", "seats": 280},
+            {"name": "RR Cinema: Jaipuria Mall, Indirapuram", "seats": 200},
+            {"name": "US Cinemas: Eros Mall, Indirapuram", "seats": 220},
+            
+            {"name": "INOX: Janak Place", "seats": 260},
+            {"name": "INOX: Pacific Mall, Jasola", "seats": 300},
+            {"name": "PVR Promenade: Vasant Kunj", "seats": 350}
+        ]
+    }
+      ]
+  },
+  {
+      "city": "Hyderabad",
+      "movie": [
+          {
+              "name": "Pushpa: The Rule - Part 2",
+              "halls": [
+                  {"name": "Anjali Movie Max: Secunderabad", "seats": 250},
+                  {"name": "Cinepolis: Mantra Mall, Attapur", "seats": 300},
+                  {"name": "Cinepolis: Sudha Cinemas, Hyderabad", "seats": 280},
+                  {"name": "Cinepolis: TNR North City, Kompally, Hyderabad", "seats": 320},
+                  {"name": "INOX: Maheshwari Parmeshwari Mall, Kachiguda", "seats": 220},
+                  {"name": "MovieMax: AMR, ECIL Secunderabad", "seats": 300},
+                  {"name": "PVR ICON: Hitech, Madhapur, Hyderabad", "seats": 400},
+                  {"name": "Tivoli Cinemas: Secunderabad", "seats": 250}
+              ]
+          },
+          {
+              "name": "Vanvaas",
+              "halls": [
+                  {"name": "Cinepolis: Mantra Mall, Attapur", "seats": 300},
+                  {"name": "PVR ICON: Hitech, Madhapur, Hyderabad", "seats": 400}
+              ]
+          },
+          {
+            "name": "Marco",
+            "halls": [
+                {"name": "Anjali Movie Max: Secunderabad", "seats": 250},
+                {"name": "Cinepolis: Mantra Mall, Attapur", "seats": 300},
+                {"name": "Cinepolis: Sudha Cinemas, Hyderabad", "seats": 280},
+                {"name": "Cinepolis: TNR North City, Kompally, Hyderabad", "seats": 320},
+                {"name": "INOX: Maheshwari Parmeshwari Mall, Kachiguda", "seats": 220},
+                {"name": "MovieMax: AMR, ECIL Secunderabad", "seats": 300},
+                {"name": "PVR ICON: Hitech, Madhapur, Hyderabad", "seats": 400},
+                {"name": "Tivoli Cinemas: Secunderabad", "seats": 250}
+            ]
+        },
+        {
+          "name": "Solo Leveling: ReAwakening",
+          "halls": [
+              {"name": "Anjali Movie Max: Secunderabad", "seats": 250},
+              {"name": "Cinepolis: Mantra Mall, Attapur", "seats": 300},
+              {"name": "Cinepolis: Sudha Cinemas, Hyderabad", "seats": 280},
+              {"name": "Tivoli Cinemas: Secunderabad", "seats": 250}
+          ]
+      }
+      ]
+  },
+  {
+      "city": "Bengaluru",
+      "movie": [
+          {
+              "name": "Pushpa: The Rule - Part 2",
+              "halls": [
+                  {"name": "Cinephile HSR Layout: PNR Felicity Mall Haralur Rd", "seats": 180},
+                  {"name": "Cinepolis: Binnypet Mall", "seats": 250},
+                  {"name": "Cinepolis: Nexus Shantiniketan, Bengaluru", "seats": 300},
+                  {"name": "Cinepolis: Royal Meenakshi Mall", "seats": 280},
+                  {"name": "Gopalan Cinemas: Bannerghatta Road", "seats": 200},
+                  {"name": "INOX: Central, JP Nagar, Mantri Junction", "seats": 220},
+                  {"name": "INOX: Garuda Mall, Magrath Road", "seats": 260},
+                  {"name": "INOX: Mantri Square, Malleshwaram", "seats": 300},
+                  {"name": "INOX: Nexus, Whitefield", "seats": 270},
+                  {"name": "PVR: Aura Park Square, Whitefield", "seats": 320},
+                  {"name": "PVR: Directors Cut, Forum Rex Walk Bengaluru", "seats": 400}
+              ]
+          },
+          {
+              "name": "Mufasa: The Lion King",
+              "halls": [
+                  {"name": "INOX: Nexus, Whitefield", "seats": 270},
+                  {"name": "PVR: Aura Park Square, Whitefield", "seats": 320}
+              ]
+          },
+          {
+            "name": "Jailer",
+            "halls": [
+                {"name": "Cinephile HSR Layout: PNR Felicity Mall Haralur Rd", "seats": 180},
+                {"name": "Cinepolis: Binnypet Mall", "seats": 250},
+                {"name": "Cinepolis: Nexus Shantiniketan, Bengaluru", "seats": 300},
+                {"name": "Cinepolis: Royal Meenakshi Mall", "seats": 280},
+                {"name": "Gopalan Cinemas: Bannerghatta Road", "seats": 200},
+                {"name": "INOX: Central, JP Nagar, Mantri Junction", "seats": 220},
+                {"name": "INOX: Garuda Mall, Magrath Road", "seats": 260},
+                {"name": "INOX: Mantri Square, Malleshwaram", "seats": 300},
+                {"name": "INOX: Nexus, Whitefield", "seats": 270},
+                {"name": "PVR: Aura Park Square, Whitefield", "seats": 320},
+                {"name": "PVR: Directors Cut, Forum Rex Walk Bengaluru", "seats": 400}
+            ]
+        }
+      ]
+  }
+]
+
+  
