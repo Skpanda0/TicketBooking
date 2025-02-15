@@ -7,11 +7,19 @@ const http = require('http');
 const socketIo = require('socket.io'); 
 
 const app = express();
-const server = http.createServer(app); // Create an HTTP server
+const server = http.createServer(app);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // ✅ Use Render's dynamic port
 
-// Ensure only one instance of WebSocket is created
+// Check if something is already running on the port
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
+    process.exit(1);
+  }
+});
+
+// Ensure WebSocket runs only once
 if (!global.io) {
   global.io = socketIo(server, {
     cors: {
@@ -20,14 +28,18 @@ if (!global.io) {
   });
 
   global.io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
+    console.log('✅ User connected:', socket.id);
 
     socket.on('disconnect', () => {
-      console.log('User disconnected:', socket.id);
+      console.log('❌ User disconnected:', socket.id);
     });
   });
-} else {
-  console.log("WebSocket server already running.");
+}
+
+// ✅ Close any previous server before restarting (Prevents multiple instances)
+if (server.listening) {
+  console.log("⚠️ Closing previous instance before restarting...");
+  server.close();
 }
 
 // Connect to MongoDB
@@ -38,7 +50,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
-// Import and use routes *AFTER* setting up WebSocket
+// Import and use routes
 const authRoutes = require('./routes/auth');
 const hallsRoutes = require('./routes/hallreq');
 const reservedSeatsRoutes = require('./routes/seatreserve');  
@@ -51,17 +63,18 @@ app.use(reservedSeatsRoutes);
 app.use(getSeats);
 app.use(userBookings);
 
-// Prevent multiple instances from listening on the same port
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use. Exiting...`);
-    process.exit(1);
-  }
+// ✅ Graceful shutdown on restart
+process.on('SIGTERM', () => {
+  console.log('🚀 Gracefully shutting down...');
+  server.close(() => {
+    console.log('✅ Server closed.');
+    process.exit(0);
+  });
 });
 
-// Start the server only if it's not already running
+// Start the server
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
 
 module.exports = server;
