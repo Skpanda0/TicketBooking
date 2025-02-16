@@ -9,7 +9,7 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 4000; 
+const PORT = process.env.PORT || 10000; 
 
 server.on('error', (err) => {
   console.log(err)
