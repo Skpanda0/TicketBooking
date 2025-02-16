@@ -78,7 +78,7 @@ app.use(userBookings);
 // });
 
 // ✅ Start the server using the dynamic port
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
 
