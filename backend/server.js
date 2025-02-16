@@ -10,7 +10,7 @@ const app = express();
 const server = http.createServer(app);
 
 // ✅ Use Render’s dynamic port (do NOT hardcode 10000)
-const PORT = process.env.PORT || 5000; 
+const PORT = process.env.PORT || 4000; 
 
 // Check if something is already running on the port
 server.on('error', (err) => {
