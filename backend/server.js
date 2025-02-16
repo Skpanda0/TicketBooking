@@ -12,8 +12,9 @@ const server = http.createServer(app);
 const PORT = process.env.PORT || 4000; 
 
 server.on('error', (err) => {
+  console.log(err)
   if (err.code === 'EADDRINUSE') {
-    console.error("⚠️ Port ${PORT} is already in use. Exiting...");
+    console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
     process.exit(1);
   }
 });
@@ -67,7 +68,7 @@ process.on('SIGTERM', () => {
 
 // ✅ Start the server using the dynamic port
 server.listen(PORT, () => {
-  console.log("🚀 Server running on port ${PORT}");
+  console.log(`🚀 Server running on port ${PORT}`);
 });
 
 module.exports = server;
