@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { addMovie } from "../../redux/movieDataSlice";
 import { fetchMovies } from "../../redux/movieSlice";
 import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
-import pushpa from "../../assets/clips/pushpa.mp4";
+
 import "swiper/css";
 import "swiper/css/navigation";
 

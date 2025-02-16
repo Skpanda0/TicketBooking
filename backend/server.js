@@ -9,7 +9,7 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 4000; 
+const PORT = process.env.PORT || 10000; 
 
 server.on('error', (err) => {
   console.log(err)
@@ -51,11 +51,18 @@ const reservedSeatsRoutes = require('./routes/seatreserve');
 const getSeats = require('./routes/getSeats');
 const userBookings = require('./routes/userBookings');
 
-app.use(authRoutes);
-app.use(hallsRoutes);
-app.use(reservedSeatsRoutes);
-app.use(getSeats);
-app.use(userBookings);
+// app.use(authRoutes);
+// app.use(hallsRoutes);
+// app.use(reservedSeatsRoutes);
+// app.use(getSeats);
+// app.use(userBookings);
+
+app.use('/api/auth', authRoutes);
+app.use('/api/halls', hallsRoutes);
+app.use('/api/seats', reservedSeatsRoutes);
+app.use('/api/getSeats', getSeats);
+app.use('/api/userBookings', userBookings);
+
 
 // ✅ Graceful shutdown for Render restarts
 process.on('SIGTERM', () => {
