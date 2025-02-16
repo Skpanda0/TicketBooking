@@ -9,13 +9,11 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-// ✅ Use Render’s dynamic port (do NOT hardcode 10000)
 const PORT = process.env.PORT || 4000; 
 
-// Check if something is already running on the port
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
+    console.error("⚠️ Port ${PORT} is already in use. Exiting...");
     process.exit(1);
   }
 });
@@ -37,12 +35,6 @@ if (!global.io) {
   });
 }
 
-// ✅ Close previous instance before restarting
-if (server.listening) {
-  console.log("⚠️ Closing previous instance before restarting...");
-  server.close();
-}
-
 // Connect to MongoDB
 connectDB();
 
@@ -54,7 +46,7 @@ app.use(bodyParser.json());
 // Import and use routes
 const authRoutes = require('./routes/auth');
 const hallsRoutes = require('./routes/hallreq');
-const reservedSeatsRoutes = require('./routes/seatreserve');  
+const reservedSeatsRoutes = require('./routes/seatreserve');
 const getSeats = require('./routes/getSeats');
 const userBookings = require('./routes/userBookings');
 
@@ -69,13 +61,13 @@ process.on('SIGTERM', () => {
   console.log('🚀 Gracefully shutting down...');
   server.close(() => {
     console.log('✅ Server closed.');
-    process.exit(0);
+    process.exit(1);  // Force exit
   });
 });
 
 // ✅ Start the server using the dynamic port
 server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log("🚀 Server running on port ${PORT}");
 });
 
 module.exports = server;
