@@ -7,7 +7,8 @@ const connectDB = require('./config/db');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT; // Do not hardcode any port
+// ✅ Use Render's dynamic port
+const PORT = process.env.PORT || 10000;
 
 if (!PORT) {
   throw new Error("❌ PORT is not defined in environment variables");
@@ -57,8 +58,8 @@ process.on('SIGTERM', () => {
   });
 });
 
-// ✅ Start the server
-server.listen(PORT, () => {
+// ✅ Start the server with dynamic port
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
 
