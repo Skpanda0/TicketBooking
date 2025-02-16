@@ -13,10 +13,10 @@ const PORT = process.env.PORT || 4000;
 
 server.on('error', (err) => {
   console.log(err)
-  if (err.code === 'EADDRINUSE') {
-    console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
-    process.exit(1);
-  }
+  // if (err.code === 'EADDRINUSE') {
+  //   console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
+  //   // process.exit(1);
+  // }
 });
 
 // ✅ Ensure only one WebSocket instance
