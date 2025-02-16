@@ -58,13 +58,13 @@ app.use(getSeats);
 app.use(userBookings);
 
 // ✅ Graceful shutdown for Render restarts
-process.on('SIGTERM', () => {
-  console.log('🚀 Gracefully shutting down...');
-  server.close(() => {
-    console.log('✅ Server closed.');
-    process.exit(1);  // Force exit
-  });
-});
+// process.on('SIGTERM', () => {
+//   console.log('🚀 Gracefully shutting down...');
+//   server.close(() => {
+//     console.log('✅ Server closed.');
+//     process.exit(1);  // Force exit
+//   });
+// });
 
 // ✅ Start the server using the dynamic port
 server.listen(PORT, () => {
