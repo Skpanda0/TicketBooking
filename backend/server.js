@@ -9,7 +9,10 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 10000; 
+const PORT = process.env.PORT; // Remove hardcoded 10000
+if (!PORT) {
+  throw new Error("❌ PORT is not defined in environment variables");
+}
 
 app.get('/', (req, res) => {
   res.send('✅ Backend is running!');
@@ -78,7 +81,7 @@ app.use(userBookings);
 // });
 
 // ✅ Start the server using the dynamic port
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
 
