@@ -33,14 +33,14 @@ app.use(bodyParser.json());
 
 // // Import and use routes *AFTER* setting up `io`
 const authRoutes = require('./routes/auth');
-const hallsRoutes = require('./routes/hallreq');
-// const reservedSeatsRoutes = require('./routes/seatreserve');  
+// const hallsRoutes = require('./routes/hallreq');
+const reservedSeatsRoutes = require('./routes/seatreserve');  
 // const getSeats = require('./routes/getSeats');
 // const userBookings = require('./routes/userBookings');
 
 app.use(authRoutes);
-app.use(hallsRoutes);
-// app.use(reservedSeatsRoutes);
+// app.use(hallsRoutes);
+app.use(reservedSeatsRoutes);
 // app.use(getSeats);
 // app.use(userBookings);
 
