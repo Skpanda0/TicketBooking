@@ -17,7 +17,7 @@ const io = socketIo(server, {
 // ✅ Attach `io` globally
 // global.io = io;  
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 6969;
 
 // Connect to MongoDB
 connectDB();
@@ -33,16 +33,16 @@ app.use(bodyParser.json());
 
 // // Import and use routes *AFTER* setting up `io`
 const authRoutes = require('./routes/auth');
-const hallsRoutes = require('./routes/hallreq');
-const reservedSeatsRoutes = require('./routes/seatreserve');  
-const getSeats = require('./routes/getSeats');
-const userBookings = require('./routes/userBookings');
+// const hallsRoutes = require('./routes/hallreq');
+// const reservedSeatsRoutes = require('./routes/seatreserve');  
+// const getSeats = require('./routes/getSeats');
+// const userBookings = require('./routes/userBookings');
 
 app.use(authRoutes);
-app.use(hallsRoutes);
-app.use(reservedSeatsRoutes);
-app.use(getSeats);
-app.use(userBookings);
+// app.use(hallsRoutes);
+// app.use(reservedSeatsRoutes);
+// app.use(getSeats);
+// app.use(userBookings);
 
 // // WebSocket Connection
 // io.on('connection', (socket) => {
