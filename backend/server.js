@@ -1,13 +1,7 @@
-// require('dotenv').config();
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const connectDB = require('./config/db');
-// const http = require('http'); 
-// const socketIo = require('socket.io'); 
+
 
 // const app = express();
-// const server = http.createServer(app);
+
 
 // const PORT = process.env.PORT || 10000; // Remove hardcoded 10000
 // if (!PORT) {
@@ -26,30 +20,10 @@
 //   // }
 // });
 
-// // ✅ Ensure only one WebSocket instance
-// // if (!global.io) {
-// //   global.io = socketIo(server, {
-// //     cors: {
-// //       origin: "*",
-// //     },
-// //   });
 
-// //   global.io.on('connection', (socket) => {
-// //     console.log('✅ User connected:', socket.id);
-
-// //     socket.on('disconnect', () => {
-// //       console.log('❌ User disconnected:', socket.id);
-// //     });
-// //   });
-// // }
-
-// // Connect to MongoDB
-// // connectDB();
 
 // // Middleware
-// app.use(cors());
-// app.use(express.json());
-// app.use(bodyParser.json());
+
 
 // // Import and use routes
 // const authRoutes = require('./routes/auth');
@@ -86,16 +60,42 @@
 // });
 
 // module.exports = server;
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 10000; // You can change the port if needed
 
+require('dotenv').config();
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const connectDB = require('./config/db');
+const http = require('http'); 
+const socketIo = require('socket.io');
+const app = express();
+
+const PORT = process.env.PORT || 3000; // You can change the port if needed
+const server = http.createServer(app);
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
 // Define a GET route
 app.get('/', (req, res) => {
     res.send('Hello');
 });
+if (!global.io) {
+  global.io = socketIo(server, {
+    cors: {
+      origin: "*",
+    },
+  });
 
-// Start the server
+  global.io.on('connection', (socket) => {
+    console.log('✅ User connected:', socket.id);
+
+    socket.on('disconnect', () => {
+      console.log('❌ User disconnected:', socket.id);
+    });
+  });
+}
+
+connectDB();
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
