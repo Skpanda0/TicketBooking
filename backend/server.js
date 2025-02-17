@@ -15,7 +15,7 @@ const io = socketIo(server, {
 });
 
 // ✅ Attach `io` globally
-global.io = io;  
+// global.io = io;  
 
 const PORT = process.env.PORT || 6969;
 
@@ -26,32 +26,32 @@ app.get('/', (req, res) => {
   res.send("hello from backend")
 })
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.json());
+// // Middleware
+// app.use(cors());
+// app.use(express.json());
+// app.use(bodyParser.json());
 
-// Import and use routes *AFTER* setting up `io`
-const authRoutes = require('./routes/auth');
-const hallsRoutes = require('./routes/hallreq');
-const reservedSeatsRoutes = require('./routes/seatreserve');  
-const getSeats = require('./routes/getSeats');
-const userBookings = require('./routes/userBookings');
+// // Import and use routes *AFTER* setting up `io`
+// const authRoutes = require('./routes/auth');
+// const hallsRoutes = require('./routes/hallreq');
+// const reservedSeatsRoutes = require('./routes/seatreserve');  
+// const getSeats = require('./routes/getSeats');
+// const userBookings = require('./routes/userBookings');
 
-app.use(authRoutes);
-app.use(hallsRoutes);
-app.use(reservedSeatsRoutes);
-app.use(getSeats);
-app.use(userBookings);
+// app.use(authRoutes);
+// app.use(hallsRoutes);
+// app.use(reservedSeatsRoutes);
+// app.use(getSeats);
+// app.use(userBookings);
 
-// WebSocket Connection
-io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
+// // WebSocket Connection
+// io.on('connection', (socket) => {
+//   console.log('User connected:', socket.id);
 
-  socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
-  });
-});
+//   socket.on('disconnect', () => {
+//     console.log('User disconnected:', socket.id);
+//   });
+// });
 
 // Start the server
 server.listen(PORT, () => {
