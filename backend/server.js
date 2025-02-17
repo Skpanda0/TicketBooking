@@ -9,7 +9,7 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT; // Remove hardcoded 10000
+const PORT = process.env.PORT || 6969; // Remove hardcoded 10000
 if (!PORT) {
   throw new Error("❌ PORT is not defined in environment variables");
 }

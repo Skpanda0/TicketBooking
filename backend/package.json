@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
@@ -24,6 +24,7 @@
     "nodemon": "^3.1.9",
     "razorpay": "^2.9.5",
     "socket.io": "^4.8.1",
-    "twilio": "^5.4.0"
+    "twilio": "^5.4.0",
+    "vercel": "^32.3.0"
   }
 }

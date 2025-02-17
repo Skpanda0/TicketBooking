@@ -51,3 +51,4 @@ Thumbs.db
 # Optional: Ignore compiled TypeScript files
 *.tsbuildinfo
 
+.vercel
