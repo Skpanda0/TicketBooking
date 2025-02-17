@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const halls = require('./halls.json');  // Assuming you have halls.json data
+const halls = require('../halls.json');  // Assuming you have halls.json data
 const router = express.Router();  // Use the router here
 
 // Use express.json() middleware to parse JSON body of incoming requests
