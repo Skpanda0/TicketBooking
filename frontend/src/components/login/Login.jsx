@@ -75,7 +75,7 @@ const LoginPage = () => {
             return;
         }
 
-        const response = await axios.post('https://localhost:5173/api/auth/send-otp', requestData);
+        const response = await axios.post('https://ticketbooking-backend-kosn.onrender.com/api/auth/send-otp', requestData);
 
         if (response.status === 200) {
             toast.success('OTP sent successfully!', { id: loadingToastId }); // Show success message
@@ -110,7 +110,7 @@ const LoginPage = () => {
         }
 
         // Send OTP verification request
-        const response = await axios.post('https://ticketbooking-backend-28h9.onrender.com/api/auth/verify-otp', requestData);
+        const response = await axios.post('https://ticketbooking-backend-kosn.onrender.com/api/auth/verify-otp', requestData);
 
         if (response.status === 200) {
             const user = response.data;
