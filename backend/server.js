@@ -15,7 +15,7 @@ const io = socketIo(server, {
 });
 
 // ✅ Attach `io` globally
-// global.io = io;  
+global.io = io;  
 
 const PORT = process.env.PORT || 6969;
 
@@ -44,14 +44,14 @@ app.use(reservedSeatsRoutes);
 app.use(getSeats);
 app.use(userBookings);
 
-// // WebSocket Connection
-// io.on('connection', (socket) => {
-//   console.log('User connected:', socket.id);
+// WebSocket Connection
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
 
-//   socket.on('disconnect', () => {
-//     console.log('User disconnected:', socket.id);
-//   });
-// });
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
 
 // Start the server
 server.listen(PORT, () => {
