@@ -9,29 +9,42 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = 6969 || process.env.PORT ; // Remove hardcoded 10000
-if (!PORT) {
-  throw new Error("❌ PORT is not defined in environment variables");
-}
+const PORT = process.env.PORT || 6969; // ✅ Corrected the PORT logic
 
-app.get('/', (req, res) => {
+// ✅ Middleware
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
+
+// ✅ Connect to MongoDB
+connectDB();
+
+// ✅ Define Routes
+const authRoutes = require('./routes/auth');
+const hallsRoutes = require('./routes/hallreq');
+const reservedSeatsRoutes = require('./routes/seatreserve');
+const getSeats = require('./routes/getSeats');
+const userBookings = require('./routes/userBookings');
+
+app.use('/api/auth', authRoutes);
+app.use('/api/halls', hallsRoutes);
+app.use('/api/seats', reservedSeatsRoutes);
+app.use('/api/getSeats', getSeats);
+app.use('/api/userBookings', userBookings);
+
+// ✅ Ensure API responds correctly
+app.get('/api', (req, res) => {
   res.send('✅ Backend is running!');
 });
 
-server.on('error', (err) => {
-  console.log(err)
-  // if (err.code === 'EADDRINUSE') {
-  //   console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
-  //   // process.exit(1);
-  // }
-});
-
-// ✅ Ensure only one WebSocket instance
+// ✅ Fix WebSocket Support for Render
 if (!global.io) {
   global.io = socketIo(server, {
     cors: {
       origin: "*",
+      methods: ["GET", "POST"],
     },
+    transports: ["websocket", "polling"], // ✅ Added polling support for Render
   });
 
   global.io.on('connection', (socket) => {
@@ -43,44 +56,26 @@ if (!global.io) {
   });
 }
 
-// Connect to MongoDB
-connectDB();
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.json());
-
-// Import and use routes
-const authRoutes = require('./routes/auth');
-const hallsRoutes = require('./routes/hallreq');
-const reservedSeatsRoutes = require('./routes/seatreserve');
-const getSeats = require('./routes/getSeats');
-const userBookings = require('./routes/userBookings');
-
-app.use(authRoutes);
-app.use(hallsRoutes);
-app.use(reservedSeatsRoutes);
-app.use(getSeats);
-app.use(userBookings);
-
-// app.use('/api/auth', authRoutes);
-// app.use('/api/halls', hallsRoutes);
-// app.use('/api/seats', reservedSeatsRoutes);
-// app.use('/api/getSeats', getSeats);
-// app.use('/api/userBookings', userBookings);
-
+// ✅ Handle Server Errors (Fix EADDRINUSE)
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
+    process.exit(1);
+  } else {
+    console.error(err);
+  }
+});
 
 // ✅ Graceful shutdown for Render restarts
-// process.on('SIGTERM', () => {
-//   console.log('🚀 Gracefully shutting down...');
-//   server.close(() => {
-//     console.log('✅ Server closed.');
-//     process.exit(1);  // Force exit
-//   });
-// });
+process.on('SIGTERM', () => {
+  console.log('🚀 Gracefully shutting down...');
+  server.close(() => {
+    console.log('✅ Server closed.');
+    process.exit(1);
+  });
+});
 
-// ✅ Start the server using the dynamic port
+// ✅ Start the server
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
