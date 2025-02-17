@@ -20,7 +20,9 @@ const transporter = nodemailer.createTransport({
 
 // Helper Function to Generate OTP
 const generateOtp = () => Math.floor(1000 + Math.random() * 9000).toString();
-
+router.get('/api/auth', (req, res) => {
+    res.send("hello from auth")
+  })
 
 // Route to Send OTP
 router.post('/api/auth/send-otp', async (req, res) => {
