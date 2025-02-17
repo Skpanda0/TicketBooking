@@ -3,13 +3,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('./config/db');
-const http = require('http'); 
-const socketIo = require('socket.io'); 
+const http = require('http');
+const socketIo = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 6969; // ✅ Corrected the PORT logic
+// ✅ Use only process.env.PORT (Render assigns a port)
+const PORT = process.env.PORT;  
+if (!PORT) {
+  throw new Error("❌ PORT is not defined in environment variables");
+}
 
 // ✅ Middleware
 app.use(cors());
@@ -33,18 +37,18 @@ app.use('/api/getSeats', getSeats);
 app.use('/api/userBookings', userBookings);
 
 // ✅ Ensure API responds correctly
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   res.send('✅ Backend is running!');
 });
 
-// ✅ Fix WebSocket Support for Render
+// ✅ Fix WebSocket for Render
 if (!global.io) {
   global.io = socketIo(server, {
     cors: {
       origin: "*",
       methods: ["GET", "POST"],
     },
-    transports: ["websocket", "polling"], // ✅ Added polling support for Render
+    transports: ["websocket", "polling"], 
   });
 
   global.io.on('connection', (socket) => {
@@ -56,17 +60,17 @@ if (!global.io) {
   });
 }
 
-// ✅ Handle Server Errors (Fix EADDRINUSE)
+// ✅ Handle Port Errors (Fix EADDRINUSE)
 server.on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
-    console.error(`⚠️ Port ${PORT} is already in use. Exiting...`);
+    console.error(`⚠️ Port ${PORT} is already in use. Restarting...`);
     process.exit(1);
   } else {
     console.error(err);
   }
 });
 
-// ✅ Graceful shutdown for Render restarts
+// ✅ Graceful Shutdown for Render
 process.on('SIGTERM', () => {
   console.log('🚀 Gracefully shutting down...');
   server.close(() => {
@@ -75,8 +79,8 @@ process.on('SIGTERM', () => {
   });
 });
 
-// ✅ Start the server
-server.listen(PORT, '0.0.0.0', () => {
+// ✅ Start Server
+server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
 
