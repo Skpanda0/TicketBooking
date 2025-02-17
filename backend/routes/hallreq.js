@@ -12,7 +12,7 @@ app.use(express.json());
 
 // Define the POST route for getting halls  
 router.post("/api/get-halls", (req, res) => {
-    res.send("hello from hallreq")
+    // res.send("hello from hallreq")
     const { city, movieName } = req.body;
 
     // Check if city and movieName are provided

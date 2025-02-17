@@ -8,7 +8,7 @@ export const fetchHalls = createAsyncThunk(
   async ({ city, movieName }, thunkAPI) => { // Destructure city and movieName from the payload
     try {
       // Send a POST request to the server with city and movieName
-      const response = await axios.post("http://localhost:6969/api/get-halls", { city, movieName });
+      const response = await axios.post("https://ticketbooking-backend-kosn.onrender.com/api/get-halls", { city, movieName });
       // Return the halls data received from the server
       return response.data.halls;
     } catch (error) {

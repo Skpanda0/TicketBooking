@@ -15,7 +15,7 @@ const Order = () => {
       try {
         // Making an API call to get the bookings of the current user
         const response = await axios.get(
-          `http://localhost:6969/api/user-bookings/${userId}`
+          `https://ticketbooking-backend-kosn.onrender.com/api/user-bookings/${userId}`
         );
         if (response.status === 200) {
           // console.log(response.data);  // Log the fetched data for debugging
