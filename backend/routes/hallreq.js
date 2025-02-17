@@ -1,17 +1,18 @@
 const express = require('express');
 const app = express();
-const halls = require('../halls.json');  // Assuming you have halls.json data
+const halls = require('./halls.json');  // Assuming you have halls.json data
 const router = express.Router();  // Use the router here
 
 // Use express.json() middleware to parse JSON body of incoming requests
 app.use(express.json());
 
-router.get('/api/hallreq', (req, res) => {
-    res.send("hello from hallreq")
-  })
+// router.get('/api/hallreq', (req, res) => {
+//     res.send("hello from hallreq")
+//   })
 
 // Define the POST route for getting halls  
 router.post("/api/get-halls", (req, res) => {
+    res.send("hello from hallreq")
     const { city, movieName } = req.body;
 
     // Check if city and movieName are provided
@@ -43,12 +44,12 @@ router.post("/api/get-halls", (req, res) => {
 
 
 // Attach the router to the express app
-app.use(router);
+// app.use(router);
 
-// Set the port for your server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// // Set the port for your server
+// const PORT = process.env.PORT || 3000;
+// app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+// });
 
 module.exports = router;
