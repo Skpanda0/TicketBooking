@@ -4,6 +4,10 @@ const { default: mongoose } = require('mongoose');
 
 const router = express.Router();
 
+router.get('/api/getseat', (req, res) => {
+  res.send("hello from getseats")
+})
+
 router.post('/api/get-reserved-seats', async (req, res) => {
   const { movieName, location, timing, hallName, day, date, month } = req.body;
 

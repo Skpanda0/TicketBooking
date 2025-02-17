@@ -3,6 +3,10 @@ const User = require('../models/user'); // Import the User model
 const app = express();
 const router = express.Router();
 
+router.get('/api/boke', (req, res) => {
+    res.send("hello from book")
+  })
+
 router.get('/api/user-bookings/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);

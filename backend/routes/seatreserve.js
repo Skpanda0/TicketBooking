@@ -6,6 +6,10 @@ const User = require('../models/user'); // Assuming you have a User model
 
 const router = express.Router();
 
+router.get('/api/seatres', (req, res) => {
+  res.send("hello from resseat")
+})
+
 const validateBookingDetails = (bookingDetails) => {
   if (
     !bookingDetails.hallName ||

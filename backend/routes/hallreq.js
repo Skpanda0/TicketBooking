@@ -6,6 +6,10 @@ const router = express.Router();  // Use the router here
 // Use express.json() middleware to parse JSON body of incoming requests
 app.use(express.json());
 
+router.get('/api/hallreq', (req, res) => {
+    res.send("hello from hallreq")
+  })
+
 // Define the POST route for getting halls  
 router.post("/api/get-halls", (req, res) => {
     const { city, movieName } = req.body;
