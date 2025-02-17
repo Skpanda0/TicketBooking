@@ -25,24 +25,7 @@
 // // Middleware
 
 
-// // Import and use routes
-// const authRoutes = require('./routes/auth');
-// const hallsRoutes = require('./routes/hallreq');
-// const reservedSeatsRoutes = require('./routes/seatreserve');
-// const getSeats = require('./routes/getSeats');
-// const userBookings = require('./routes/userBookings');
 
-// app.use(authRoutes);
-// app.use(hallsRoutes);
-// app.use(reservedSeatsRoutes);
-// app.use(getSeats);
-// app.use(userBookings);
-
-// // app.use('/api/auth', authRoutes);
-// // app.use('/api/halls', hallsRoutes);
-// // app.use('/api/seats', reservedSeatsRoutes);
-// // app.use('/api/getSeats', getSeats);
-// // app.use('/api/userBookings', userBookings);
 
 
 // // ✅ Graceful shutdown for Render restarts
@@ -96,6 +79,24 @@ if (!global.io) {
 }
 
 connectDB();
+// Import and use routes
+const authRoutes = require('./routes/auth');
+const hallsRoutes = require('./routes/hallreq');
+const reservedSeatsRoutes = require('./routes/seatreserve');
+const getSeats = require('./routes/getSeats');
+const userBookings = require('./routes/userBookings');
+
+app.use(authRoutes);
+app.use(hallsRoutes);
+app.use(reservedSeatsRoutes);
+app.use(getSeats);
+app.use(userBookings);
+
+// app.use('/api/auth', authRoutes);
+// app.use('/api/halls', hallsRoutes);
+// app.use('/api/seats', reservedSeatsRoutes);
+// app.use('/api/getSeats', getSeats);
+// app.use('/api/userBookings', userBookings);
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
