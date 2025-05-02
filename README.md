@@ -84,23 +84,25 @@ create a .env file in your backend folder and add this variables
 ```
 
 ## 📸 Screenshots
-### Home page 
-    ![Home](frontend/src/assets/home-page.png)
 
-### Login page
-    ![Login](frontend/src/assets/login.png)
+### 🏠 Home Page  
+![Home Page](frontend/src/assets/home-page.png)
 
-### Movie Details page
-    ![Movie](frontend/src/assets/movie-details.png)
+### 🔐 Login Page  
+![Login Page](frontend/src/assets/login.png)
 
-### Seat Selection page
-    ![Seat Selection](frontend/src/assets/booking-seats.png)
+### 🎬 Movie Details Page  
+![Movie Details](frontend/src/assets/movie-details.png)
 
-### Payment page
-    ![Payment](frontend/src/assets/payment.png)
+### 🎟️ Seat Selection Page  
+![Seat Selection](frontend/src/assets/booking-seats.png)
 
-### All Orders page
-    ![Orders](frontend/src/assets/orders.png)
+### 💳 Payment Page  
+![Payment](frontend/src/assets/payment.png)
+
+### 📋 All Orders Page  
+![All Orders](frontend/src/assets/orders.png)
+
 
 
 ## 🤝 Contributing
