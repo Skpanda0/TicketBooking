@@ -2,9 +2,11 @@
 
 TicketBooking is a MERN-stack web application designed to streamline the process of booking tickets for various events. Built with a modern tech stack, it offers users an intuitive interface to browse events, select seats, and manage their bookings seamlessly.
 
+
 ## 🌐 Live Demo
 
 Experience the application live: [ticketbooking-jvie.onrender.com](https://ticketbooking-jvie.onrender.com)
+
 
 ## 🚀 Features
 
@@ -20,6 +22,7 @@ Experience the application live: [ticketbooking-jvie.onrender.com](https://ticke
 
     Track Orders: Easily tarack booking of shows, time and seats.
 
+ 
  ## 🛠️ Tech Stack
 
     Frontend: React.js, Redux, Tailwind CSS
@@ -29,6 +32,7 @@ Experience the application live: [ticketbooking-jvie.onrender.com](https://ticke
     Database: MongoDB
 
     Deployment: Render
+
 
 ## 🧑‍💻 Getting Started 
 ( Follow these step you can easily run this project )
@@ -83,6 +87,7 @@ create a .env file in your backend folder and add this variables
     TWILIO_PHONE_NUMBER: "Your twilio number"
 ```
 
+
 ## 📸 Screenshots
 
 ### 🏠 Home Page  
@@ -105,11 +110,13 @@ create a .env file in your backend folder and add this variables
 
 
 
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
 
 ### Credits 
+
 
 ## 📬 Contact
 
