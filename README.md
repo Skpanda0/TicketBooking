@@ -85,22 +85,22 @@ create a .env file in your backend folder and add this variables
 
 ## 📸 Screenshots
 ### Home page 
-    (./frontend/src/assets/home-page.png)
+    ![Home](frontend/src/assets/home-page.png)
 
 ### Login page
-    (./frontend/src/assets/login.png)
+    ![Login](frontend/src/assets/login.png)
 
 ### Movie Details page
-    (./frontend/src/assets/movie-details.png)
+    ![Movie](frontend/src/assets/movie-details.png)
 
 ### Seat Selection page
-    (./frontend/src/assets/booking-seats.png)
+    ![Seat Selection](frontend/src/assets/booking-seats.png)
 
 ### Payment page
-    (./frontend/src/assets/payment.png)
+    ![Payment](frontend/src/assets/payment.png)
 
 ### All Orders page
-    (./frontend/src/assets/orders.png)
+    ![Orders](frontend/src/assets/orders.png)
 
 
 ## 🤝 Contributing
