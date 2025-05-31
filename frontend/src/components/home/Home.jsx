@@ -7,7 +7,6 @@ import { Navigation, Mousewheel, Zoom } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { addMovie } from "../../redux/movieDataSlice";
 import { fetchMovies } from "../../redux/movieSlice";
-import { FaVolumeUp, FaVolumeMute } from "react-icons/fa";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -16,7 +15,6 @@ import "swiper/css/navigation";
 const Home = ({ searchValue, city, locationButtonRef }) => {
   const [showPopup, setShowPopup] = useState(false); // State for controlling the popup visibility
   const [selectedMovie, setSelectedMovie] = useState(null); // State for storing the selected movie
-  const apiKey = "2d91961c"; // API key for movie data (unused here but can be used for API calls)
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // Fetching login status from Redux
   const reduxUserId = useSelector((state) => state.auth.userId); // Fetching user ID from Redux
   const userId = reduxUserId || localStorage.getItem("userId"); // Get user ID from Redux or localStorage

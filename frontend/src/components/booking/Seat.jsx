@@ -7,7 +7,7 @@ import { updateReservedSeats } from "../../redux/seatSlice";
 import axios from "axios";
 import io from "socket.io-client"; // Import WebSocket client
 
-const socket = io("https://ticketbooking-backend-kosn.onrender.com"); // Connect to backend WebSocket
+const socket = io(`${process.env.PUBLIC_BASE_URL}`); // Connect to backend WebSocket
 
 const Seat = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Seat = () => {
     const fetchReservedSeats = async () => {
       try {
         const response = await axios.post(
-          "https://ticketbooking-backend-kosn.onrender.com/api/get-reserved-seats",
+          `${process.env.PUBLIC_BASE_URL}/api/get-reserved-seats`,
           {
             movieName,
             location,
@@ -138,7 +138,7 @@ const Seat = () => {
       };
 
       // Send a request to backend to create Razorpay order for seat reservation
-      const response = await axios.post("https://ticketbooking-backend-kosn.onrender.com/api/reserve-seats", {
+      const response = await axios.post(`${process.env.PUBLIC_BASE_URL}/api/reserve-seats`, {
         movieName,
         location,
         timing,
@@ -189,7 +189,7 @@ const Seat = () => {
         
             const formatter = new Intl.DateTimeFormat('en-US', options);
             const verifyResponse = await axios.post(
-              "https://ticketbooking-backend-kosn.onrender.com/api/verify-payment",
+              `${process.env.PUBLIC_BASE_URL}/api/verify-payment`,
               {
                 paymentResult: paymentDetails,
                 selectedSeats: selectedSeats,

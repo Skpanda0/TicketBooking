@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Async thunk to fetch movies from OMDB API
 export const fetchMovies = createAsyncThunk("movies/fetchMovies", async (_, { getState, rejectWithValue }) => {
-  const apiKey = "2d91961c";  // API key for OMDB API
+  const apiKey = process.env.API_KEY;  // API key for OMDB API
   const movieTitles = [
     'Pushpa: The Rule - Part 2', 'RRR', 'The Batman', 'Vanvaas', 'Jailer', 'Mufasa: The Lion King', 
     'Marco', 'Solo Leveling: ReAwakening', 'Demon Slayer: Kimetsu no Yaiba - The Movie: Mugen Train', 
