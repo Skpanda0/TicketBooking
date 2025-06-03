@@ -87,6 +87,16 @@ create a .env file in your backend folder and add this variables
     TWILIO_PHONE_NUMBER: "Your twilio number"
 ```
 
+create a .env file in your frontend folder and add this variables
+
+```    
+    VITE_PUBLIC_BASE_URL="Your backend URL"
+    
+    VITE_API_KEY="Your OMDB API key"
+    
+    VITE_RZP_KEY="Your rozerpay key" 
+```
+
 
 ## 📸 Screenshots
 
@@ -121,3 +131,7 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 ## 📬 Contact
 
 For any inquiries or feedback, please contact [Skpanda0](https://github.com/Skpanda0).
+
+X id : [Sunil74388](https://x.com/Sunil74388).
+
+Linkedin id: [Sunil Kumar Panda](https://www.linkedin.com/in/sunil-kumar-panda-975782249).
