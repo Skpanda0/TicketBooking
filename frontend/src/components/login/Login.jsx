@@ -75,7 +75,7 @@ const LoginPage = () => {
             return;
         }
 
-        const response = await axios.post(`${process.env.PUBLIC_BASE_URL}/api/auth/send-otp`, requestData);
+        const response = await axios.post(`${import.meta.env.VITE_PUBLIC_BASE_URL}/api/auth/send-otp`, requestData);
 
         if (response.status === 200) {
             toast.success('OTP sent successfully!', { id: loadingToastId }); // Show success message
@@ -110,7 +110,7 @@ const LoginPage = () => {
         }
 
         // Send OTP verification request
-        const response = await axios.post(`${process.env.PUBLIC_BASE_URL}/api/auth/verify-otp`, requestData);
+        const response = await axios.post(`${import.meta.env.VITE_PUBLIC_BASE_URL}/api/auth/verify-otp`, requestData);
 
         if (response.status === 200) {
             const user = response.data;

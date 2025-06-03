@@ -8,7 +8,7 @@ export const fetchHalls = createAsyncThunk(
   async ({ city, movieName }, thunkAPI) => { // Destructure city and movieName from the payload
     try {
       // Send a POST request to the server with city and movieName
-      const response = await axios.post(`${process.env.PUBLIC_BASE_URL}/api/get-halls`, { city, movieName });
+      const response = await axios.post(`${import.meta.env.VITE_PUBLIC_BASE_URL}/api/get-halls`, { city, movieName });
       // Return the halls data received from the server
       return response.data.halls;
     } catch (error) {

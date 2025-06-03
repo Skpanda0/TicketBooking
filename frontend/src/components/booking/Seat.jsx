@@ -7,7 +7,9 @@ import { updateReservedSeats } from "../../redux/seatSlice";
 import axios from "axios";
 import io from "socket.io-client"; // Import WebSocket client
 
-const socket = io(`${process.env.PUBLIC_BASE_URL}`); // Connect to backend WebSocket
+
+const socket = io(import.meta.env.VITE_PUBLIC_BASE_URL); // this will connect backend
+
 
 const Seat = () => {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Seat = () => {
     movieName,
     location,
     timing,
-    hallName,
+    hallName, 
     day,
     date,
     month,
@@ -41,7 +43,7 @@ const Seat = () => {
     const fetchReservedSeats = async () => {
       try {
         const response = await axios.post(
-          `${process.env.PUBLIC_BASE_URL}/api/get-reserved-seats`,
+          `${import.meta.env.VITE_PUBLIC_BASE_URL}/api/get-reserved-seats`,
           {
             movieName,
             location,
@@ -138,7 +140,7 @@ const Seat = () => {
       };
 
       // Send a request to backend to create Razorpay order for seat reservation
-      const response = await axios.post(`${process.env.PUBLIC_BASE_URL}/api/reserve-seats`, {
+      const response = await axios.post(`${import.meta.env.VITE_PUBLIC_BASE_URL}/api/reserve-seats`, {
         movieName,
         location,
         timing,
@@ -162,7 +164,7 @@ const Seat = () => {
       }
 
       const options = {
-        key: "rzp_test_eWD6xZRsShtFEb", // Replace with your Razorpay API key
+        key: import.meta.env.VITE_RZP_KEY, // Replace with your Razorpay API key
         amount: amount,
         currency: currency,
         order_id: orderId,
@@ -189,7 +191,7 @@ const Seat = () => {
         
             const formatter = new Intl.DateTimeFormat('en-US', options);
             const verifyResponse = await axios.post(
-              `${process.env.PUBLIC_BASE_URL}/api/verify-payment`,
+              `${import.meta.env.VITE_PUBLIC_BASE_URL}/api/verify-payment`,
               {
                 paymentResult: paymentDetails,
                 selectedSeats: selectedSeats,
