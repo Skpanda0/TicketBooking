@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ChevronLeft, X, Pen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,6 @@ import toast from "react-hot-toast";
 import { updateReservedSeats } from "../../redux/seatSlice";
 import axios from "axios";
 import io from "socket.io-client"; // Import WebSocket client
-
-
-const socket = io(import.meta.env.VITE_PUBLIC_BASE_URL); // this will connect backend
 
 
 const Seat = () => {
@@ -28,17 +25,15 @@ const Seat = () => {
   const [seats, setSeats] = useState(2); // State for the number of seats selected
   const [showPopup, setShowPopup] = useState(false); // State for toggling the seat selection popup
   const [selectedSeats, setSelectedSeats] = useState([]); // State to keep track of selected seats
-  const [amount, setAmounts] = useState(0); // State for calculating total price
   const [loading, setLoading] = useState(false); // Loading state to manage spinner
   const [errorMessage, setErrorMessage] = useState(""); // State for error messages
-
-  // Check if movie details exist, else display a loading message
-  if (!movieName || !hallName) {
-    return <div>Loading...</div>; // Show loading message if movieName or hallName is missing
-  }
+  const hasBookingDetails = Boolean(movieName && hallName);
+  const amount = 150 * selectedSeats.length;
 
   // Fetch reserved seats when component mounts or when movie-related data changes
   useEffect(() => {
+    if (!hasBookingDetails) return;
+
     const loadingToastId = toast.loading("Loading...");
     const fetchReservedSeats = async () => {
       try {
@@ -69,25 +64,22 @@ const Seat = () => {
     };
 
     fetchReservedSeats(); // Call fetch function to get reserved seats
-  }, [dispatch, movieName, location, timing, hallName, day, date, month]);
+  }, [dispatch, hasBookingDetails, movieName, location, timing, hallName, day, date, month]);
    
    //  WebSocket for Real-Time Seat Updates**
-   useEffect(() => {
+  useEffect(() => {
+    if (!hasBookingDetails) return;
+
+    const socket = io(import.meta.env.VITE_PUBLIC_BASE_URL); // Connect only on the seat page
     socket.on("seatUpdate", (data) => {
       dispatch(updateReservedSeats(data.reservedSeats));
     });
 
     return () => {
       socket.off("seatUpdate"); // Clean up listener on unmount
+      socket.disconnect();
     };
-  }, [dispatch]);
-
-  
-
-  // Update amount when selectedSeats changes
-  useEffect(() => {
-    setAmounts(150 * selectedSeats.length); // Calculate total price (Rs: 150 per seat)
-  }, [selectedSeats]);
+  }, [dispatch, hasBookingDetails]);
 
   // Toggle ticket selection popup visibility
   const handleTicket = () => setShowPopup(!showPopup);
@@ -97,16 +89,17 @@ const Seat = () => {
 
   // Handle seat click to select or deselect seats
   const handleSeatClick = (seatNumber) => {
-    if (selectedSeats.includes(seatNumber)) {
-      // Deselect the seat if already selected
-      setSelectedSeats(selectedSeats.filter((seat) => seat !== seatNumber));
-    } else if (selectedSeats.length < seats) {
-      // Select a seat if the number of selected seats is less than the limit
-      setSelectedSeats([...selectedSeats, seatNumber]);
-    } else {
-      // Replace a seat when the limit is exceeded
-      setSelectedSeats([...selectedSeats.slice(1), seatNumber]);
-    }
+    setSelectedSeats((currentSeats) => {
+      if (currentSeats.includes(seatNumber)) {
+        return currentSeats.filter((seat) => seat !== seatNumber);
+      }
+
+      if (currentSeats.length < seats) {
+        return [...currentSeats, seatNumber];
+      }
+
+      return [...currentSeats.slice(1), seatNumber];
+    });
   };
 
   // Load the Razorpay script dynamically for payment processing
@@ -212,7 +205,7 @@ const Seat = () => {
             // console.log("Payment Verified:", verifyResponse.data); // Commented out console.log
             if (verifyResponse.status === 200) {
               dispatch(updateReservedSeats(verifyResponse.data.reservedSeats)); // Update reserved seats in Redux
-              setAmounts(0); // Reset amount to 0 after successful booking
+              setSelectedSeats([]); // Clear selected seats after successful booking
               toast.success("Successfully booked"); // Show success message
             }
           } catch (error) {
@@ -241,6 +234,11 @@ const Seat = () => {
       setErrorMessage("Something went wrong. Please try again later.");
     }
   };
+
+  // Check if movie details exist, else display a loading message
+  if (!hasBookingDetails) {
+    return <div className="min-h-[100vh] flex items-center justify-center">Loading...</div>;
+  }
 
   return (
     <div className="min-h-[100vh]">
@@ -281,7 +279,7 @@ const Seat = () => {
             {Array.from({ length: hallName.seats }, (_, i) => i + 1).map(
               (number) => {
                 const isReserved = !!reservedSeats.find(
-                  (seat) => seat.seatNumber == number
+                  (seat) => String(seat.seatNumber) === String(number)
                 );
                 return (
                   <div key={number} className="flex justify-center items-center">
@@ -308,9 +306,13 @@ const Seat = () => {
           <button
             onClick={handlePayment}
             className="button-0 px-7 py-3 rounded-xl bg-red-500 text-white hover:bg-red-600"
+            disabled={loading}
           >
             {loading ? "Processing..." : `Pay ${amount}.00`}
           </button>
+          {errorMessage && (
+            <p className="ml-4 text-sm text-red-500">{errorMessage}</p>
+          )}
         </div>
       </div>
 

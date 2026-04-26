@@ -1,7 +1,6 @@
-import React, { useState } from "react"; // Import necessary React hooks
-import { useSelector } from "react-redux"; // Import Redux hook to access the store
+import { useEffect, useState } from "react"; // Import necessary React hooks
+import { useDispatch, useSelector } from "react-redux"; // Import Redux hook to access the store
 import { useNavigate, useParams } from "react-router-dom"; // Import navigation hooks from React Router
-import { toast } from "react-hot-toast"; // Import toast for notifications
 import { Pen } from "lucide-react"; // Import Pen icon from lucide-react for editing
 import SpotlightCard from "../ui/SpotlightCard"; // Import custom SpotlightCard component
 import ReviewCard from "./ReviewCard"; 
@@ -10,49 +9,56 @@ import Hyderabad from "../../assets/hyd.png";
 import Bengaluru from "../../assets/bang.png";
 import Delhi from "../../assets/ncr.png";
 import Berhampur from "../../assets/pune.png";
+import { fetchMovies } from "../../redux/movieSlice";
+import { CITIES, CITY_MOVIES } from "../../constants/cities";
 
-const Movie = ({ cityName, onCity }) => {
+const Movie = ({ cityName = "", onCity = () => {} }) => {
   // Fetch movie information from the Redux store
-  const info = useSelector((state) => state.movieData.movieInfo);
+  const storedInfo = useSelector((state) => state.movieData.movieInfo);
+  const { movies, loading, error } = useSelector((state) => state.movies);
+  const dispatch = useDispatch();
 
   // Get navigation function from React Router
   const navigate = useNavigate();
 
-  // Calculate the movie runtime (hours and minutes format)
-  const runtime = `${Math.floor(Number.parseInt(info.Runtime) / 60)}hr ${Number.parseInt(info.Runtime) % 60}min`;
-
   // Destructure movie name and city from URL params
   const { movieName, city } = useParams();
+  const decodedMovieName = decodeURIComponent(movieName || "");
+  const selectedCity = city || cityName || "";
+  const info = storedInfo?.Title === decodedMovieName
+    ? storedInfo
+    : movies.find((movie) => movie.Title === decodedMovieName);
+
+  useEffect(() => {
+    if (!info?.Title && movies.length === 0 && !loading && !error) {
+      dispatch(fetchMovies());
+    }
+  }, [dispatch, error, info?.Title, loading, movies.length]);
+
+  useEffect(() => {
+    if (city && city !== cityName) {
+      onCity(city);
+    }
+  }, [city, cityName, onCity]);
+
+  // Calculate the movie runtime (hours and minutes format)
+  const runtimeMinutes = Number.parseInt(info?.Runtime, 10);
+  const runtime = Number.isFinite(runtimeMinutes)
+    ? `${Math.floor(runtimeMinutes / 60)}hr ${runtimeMinutes % 60}min`
+    : "Runtime unavailable";
 
   // State for managing popups
   const [showPopup, setShowPopup] = useState(false); // Popup for movie location
   const [locationPopup, setLocationPopup] = useState(false); // Popup for city selection
+  const [showComingSoonPopup, setShowComingSoonPopup] = useState(false);
+  const [unavailableCity, setUnavailableCity] = useState("");
 
-  // List of cities and corresponding images for location selection
-  const cities = ["Mumbai", "Delhi", "Bengaluru", "Hyderabad", "Berhampur"];
   const cityImg = {
     Mumbai: Mumbai,
     Delhi: Delhi,
     Bengaluru: Bengaluru,
     Hyderabad: Hyderabad,
     Berhampur: Berhampur,
-  };
-
-  // Movies available in each city
-  const cityMovies = {
-    Delhi: ["Pushpa: The Rule - Part 2", "RRR", "The Batman", "Vanvaas", "Jailer"],
-    Bengaluru: ["Pushpa: The Rule - Part 2", "Mufasa: The Lion King", "Jailer"],
-    Hyderabad: ["Pushpa: The Rule - Part 2", "Vanvaas", "Marco", "Solo Leveling: ReAwakening"],
-    Mumbai: [
-      "RRR",
-      "The Batman",
-      "Pushpa: The Rule - Part 2",
-      "Demon Slayer: Kimetsu no Yaiba - The Movie: Mugen Train",
-      "Jujutsu Kaisen 0",
-      "Jailer",
-      "Vanvaas",
-    ],
-    Berhampur: ["RRR", "Pushpa: The Rule - Part 2", "Daman", "Jailer"],
   };
 
   // Function to close the initial popup
@@ -62,36 +68,60 @@ const Movie = ({ cityName, onCity }) => {
 
   // Function to show location popup
   const handleLocationClick = () => {
+    setShowComingSoonPopup(false);
+    setShowPopup(false);
     setLocationPopup(true);
+  };
+
+  const isMovieAvailableInCity = (cityname) => (
+    CITY_MOVIES[cityname]?.includes(decodedMovieName)
+  );
+
+  const showComingSoonForCity = (cityname) => {
+    setUnavailableCity(cityname);
+    setLocationPopup(false);
+    setShowPopup(false);
+    setShowComingSoonPopup(true);
+  };
+
+  const handleBookNow = () => {
+    if (!selectedCity) {
+      setShowPopup(true);
+      return;
+    }
+
+    if (isMovieAvailableInCity(selectedCity)) {
+      navigate(`/movie/${encodeURIComponent(decodedMovieName)}/${selectedCity}/booking`);
+      return;
+    }
+
+    showComingSoonForCity(selectedCity);
   };
 
   // Function to handle city selection and navigate to the booking page if movie is available
   const handelCity = (cityname) => {
     onCity(cityname); // Pass selected city back to the parent component
-    const movieAvailable = cityMovies[cityname]?.includes(movieName); // Check if the movie exists in the selected city
+    const movieAvailable = isMovieAvailableInCity(cityname); // Check if the movie exists in the selected city
 
     if (movieAvailable) {
       // Navigate to booking page if movie is available in the selected city
-      navigate(`/movie/${movieName}/${cityname}/booking`);
+      navigate(`/movie/${encodeURIComponent(decodedMovieName)}/${cityname}/booking`);
     } else {
-      // Show a toast notification if movie is not available in the selected city
-      toast((t) => (
-        <span>
-          {`${movieName} is not available in ${cityname}.`} 
-          <button
-            className="ml-2 px-1.5 py-1 bg-red-500 text-white rounded-xl hover:bg-red-600 overflow-hidden" 
-            onClick={() => toast.dismiss(t.id)} // Dismiss the toast notification when button is clicked
-          >
-            okay
-          </button>
-        </span>
-      ));
+      showComingSoonForCity(cityname);
     }
 
     // Close popups after city selection
     setLocationPopup(false);
     setShowPopup(false);
   };
+
+  if (!info?.Title) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center text-lg font-semibold">
+        {loading || (!error && movies.length === 0) ? "Loading movie details..." : "Movie details unavailable."}
+      </div>
+    );
+  }
 
   return (
     <div className="m-2">
@@ -138,9 +168,9 @@ const Movie = ({ cityName, onCity }) => {
             </p>
 
             {/* Booking button based on whether cityName is provided */}
-            {cityName ? (
+            {selectedCity ? (
               <button
-                onClick={() => navigate(`/movie/${movieName}/${city}/booking`)}
+                onClick={handleBookNow}
                 className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition"
               >
                 Book Now
@@ -150,7 +180,7 @@ const Movie = ({ cityName, onCity }) => {
                 onClick={() => setShowPopup(true)} // Open popup for location if no city is selected
                 className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition"
               >
-                location
+                Location
               </button>
             )}
           </div>
@@ -196,7 +226,7 @@ const Movie = ({ cityName, onCity }) => {
 
       {/* Popups for location */}
       {showPopup && (
-        <div className="absolute inset-0 top-20 sm:top-0 bottom-[-95px] pt-96 sm:pt-0 bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg p-6 sm:w-96 w-80 h-fit">
             <h3 className="text-lg font-semibold mb-4">
               Give your location for checking availability
@@ -212,7 +242,7 @@ const Movie = ({ cityName, onCity }) => {
                 onClick={handleLocationClick} // Open location selection popup
                 className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
               >
-                location
+                Location
               </button>
             </div>
           </div>
@@ -225,18 +255,46 @@ const Movie = ({ cityName, onCity }) => {
           <div className="bg-white rounded-lg shadow-lg p-6 w-96">
             <h3 className="font-semibold mb-2">Popular Cities</h3>
             <div className="grid grid-cols-2 gap-4 mt-3">
-              {cities.map((city) => (
+              {CITIES.map((city) => (
                 <button
                   onClick={() => handelCity(city)} // Handle city selection
                   key={city}
                   className={`flex flex-col items-center text-sm  hover:text-red-500`}
                 >
-                  <div className="w-10 h-10 bg-gray-200 rounded-full mb-2">
-                    <img className="bg-red-500" src={cityImg[city]} alt={city} /> {/* Display city image */}
+                  <div className="w-10 h-10 bg-gray-200 rounded-full mb-2 overflow-hidden">
+                    <img className="w-full h-full object-cover" src={cityImg[city]} alt={city} /> {/* Display city image */}
                   </div>
                   {city} {/* Display city name */}
                 </button>
               ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Movie unavailable popup */}
+      {showComingSoonPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-lg p-6 sm:w-96 w-80">
+            <h3 className="text-lg font-semibold mb-2">
+              Coming soon to your city
+            </h3>
+            <p className="text-sm text-gray-600 mb-5">
+              {decodedMovieName} is not available in {unavailableCity || "this city"} yet.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowComingSoonPopup(false)}
+                className="bg-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400"
+              >
+                OK
+              </button>
+              <button
+                onClick={handleLocationClick}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              >
+                Change City
+              </button>
             </div>
           </div>
         </div>

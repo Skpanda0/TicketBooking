@@ -1,15 +1,29 @@
-import React, { useEffect, useState } from "react";  // Importing necessary React hooks
+import { useEffect, useState } from "react";  // Importing necessary React hooks
 import axios from "axios";  // Importing axios for making HTTP requests
-import { useSelector } from "react-redux";  // Importing useSelector to access Redux state
+import { useDispatch, useSelector } from "react-redux";  // Importing Redux hooks
 import toast from "react-hot-toast";  // Importing toast for showing notifications
+import { fetchMovies } from "../../redux/movieSlice";
 
 const Order = () => {
   const [bookings, setBookings] = useState([]);  // State to hold the user's bookings
+  const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.userId);  // Retrieving userId from Redux store (assuming it is stored there)
-  const movies = useSelector((state) => state.movies.movies);  // Retrieving list of movies from Redux store
+  const { movies, loading, error } = useSelector((state) => state.movies);  // Retrieving list of movies from Redux store
+
+  useEffect(() => {
+    if (movies.length === 0 && !loading && !error) {
+      dispatch(fetchMovies());
+    }
+  }, [dispatch, error, loading, movies.length]);
 
   // useEffect to fetch the user's bookings when the component mounts or when userId changes
   useEffect(() => {
+    if (!userId) {
+      setBookings([]);
+      return;
+    }
+
+    let isActive = true;
     const loadingToastId = toast.loading("Loading...");
     const fetchUserBookings = async () => {
       try {
@@ -20,7 +34,9 @@ const Order = () => {
         if (response.status === 200) {
           // console.log(response.data);  // Log the fetched data for debugging
           toast.dismiss(loadingToastId);  // Dismiss the loading toast
-          setBookings(response.data.bookings);  // Set the fetched bookings data in state
+          if (isActive) {
+            setBookings(response.data.bookings || []);  // Set the fetched bookings data in state
+          }
         } else {
           toast.error("Failed to fetch booking details", { id: loadingToastId });  // Show error if the API call fails
         }
@@ -30,10 +46,12 @@ const Order = () => {
       }
     };
 
-    // Fetch bookings if userId exists
-    if (userId) {
-      fetchUserBookings();  // Call the function to fetch user bookings
-    }
+    fetchUserBookings();  // Call the function to fetch user bookings
+
+    return () => {
+      isActive = false;
+      toast.dismiss(loadingToastId);
+    };
   }, [userId]);  // Effect dependency on userId, so it triggers when userId changes
 
   return (

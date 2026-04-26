@@ -1,4 +1,4 @@
-import React, { useState } from "react";  // Importing React and useState for managing state in the component
+import { useState } from "react";  // Importing useState for managing state in the component
 import { FaRegQuestionCircle } from "react-icons/fa";  // Importing an icon for the question mark
 import { FaTwitter, FaFacebook, FaGithub } from "react-icons/fa";  // Importing icons for social media links
 import toast from "react-hot-toast";  // Importing toast for showing notifications

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -7,54 +7,24 @@ import { Navigation, Mousewheel, Zoom } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { addMovie } from "../../redux/movieDataSlice";
 import { fetchMovies } from "../../redux/movieSlice";
+import { CITY_MOVIES } from "../../constants/cities";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
 // Component to display the home page
-const Home = ({ searchValue, city, locationButtonRef }) => {
+const Home = ({ searchValue = "", city = "", locationButtonRef }) => {
   const [showPopup, setShowPopup] = useState(false); // State for controlling the popup visibility
   const [selectedMovie, setSelectedMovie] = useState(null); // State for storing the selected movie
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // Fetching login status from Redux
-  const reduxUserId = useSelector((state) => state.auth.userId); // Fetching user ID from Redux
-  const userId = reduxUserId || localStorage.getItem("userId"); // Get user ID from Redux or localStorage
   const navigate = useNavigate(); // Navigate function for routing
   const dispatch = useDispatch(); // Dispatch function for triggering Redux actions
   const swiperRef = useRef(null); // Reference for the Swiper component
   const { movies, loading, error } = useSelector((state) => state.movies); // Fetching movie list from Redux
-  const location = useSelector((state) => state.movieData.location); // Fetching location from Redux
-
-  // Predefined movies for different cities
-  const cityMovies = {
-    Delhi: [
-      "Pushpa: The Rule - Part 2",
-      "RRR",
-      "The Batman",
-      "Vanvaas",
-      "Jailer",
-    ],
-    Bengaluru: ["Pushpa: The Rule - Part 2", "Mufasa: The Lion King", "Jailer"],
-    Hyderabad: [
-      "Pushpa: The Rule - Part 2",
-      "Vanvaas",
-      "Marco",
-      "Solo Leveling: ReAwakening",
-    ],
-    Mumbai: [
-      "RRR",
-      "The Batman",
-      "Pushpa: The Rule - Part 2",
-      "Demon Slayer: Kimetsu no Yaiba - The Movie: Mugen Train",
-      "Jujutsu Kaisen 0",
-      "Jailer",
-      "Vanvaas",
-    ],
-    Berhampur: ["RRR", "Pushpa: The Rule - Part 2", "Daman", "Jailer"],
-  };
 
   // Fetch movies when the component mounts
   useEffect(() => {
-    if (movies.length === 0) {
+    if (movies.length === 0 && !loading && !error) {
       const loadingToastId = toast.loading("Loading movies...");
 
       // Dispatch action to fetch movies from API or Redux store
@@ -67,48 +37,59 @@ const Home = ({ searchValue, city, locationButtonRef }) => {
           toast.error("Failed to load movies.", { id: loadingToastId });
         });
     }
-  }, [dispatch, movies]); // Run when dispatch or movies change
+  }, [dispatch, error, loading, movies.length]); // Run when dispatch or movies change
+
+  const validMovies = useMemo(
+    () => movies.filter((movie) => movie?.Title && movie?.Poster && movie.Poster !== "N/A"),
+    [movies]
+  );
 
   // Filter movies based on the search value
-  const filteredMovies = movies.filter(
-    (movie) => movie.Title.toLowerCase().includes(searchValue.toLowerCase()) // Case-insensitive filtering
+  const filteredMovies = useMemo(
+    () => validMovies.filter(
+      (movie) => movie.Title.toLowerCase().includes(searchValue.toLowerCase()) // Case-insensitive filtering
+    ),
+    [searchValue, validMovies]
   );
 
   // Filter movies based on the selected city
-  const citySpecificMovies = city
-    ? movies.filter((movie) => cityMovies[city]?.includes(movie.Title)) // Movies specific to the city
-    : [];
+  const citySpecificMovies = useMemo(
+    () => city
+      ? validMovies.filter((movie) => CITY_MOVIES[city]?.includes(movie.Title)) // Movies specific to the city
+      : [],
+    [city, validMovies]
+  );
 
   // Handle movie click event when a user clicks on a movie
-  const handleMovieClick = (movieTitle) => {
+  const handleMovieClick = (movie) => {
     if (isLoggedIn) {
       // If logged in, add movie to the user's movie list
       dispatch(
         addMovie({
-          info: movies.find((movie) => movie.Title === movieTitle),
+          info: movie,
           location: city,
         })
       );
-      navigate(`/movie/${encodeURIComponent(movieTitle)}`); // Navigate to movie details page
+      navigate(`/movie/${encodeURIComponent(movie.Title)}`); // Navigate to movie details page
     } else {
-      setSelectedMovie(movieTitle); // Store selected movie title for later use
+      setSelectedMovie(movie.Title); // Store selected movie title for later use
       setShowPopup(true); // Show login popup
     }
   };
 
   // Handle movie click event when a user clicks on a movie in a specific city
-  const handleMovieClickCity = (movieTitle) => {
+  const handleMovieClickCity = (movie) => {
     if (isLoggedIn) {
       // If logged in, add movie to the user's movie list for the city
       dispatch(
         addMovie({
-          info: movies.find((movie) => movie.Title === movieTitle),
+          info: movie,
           location: city,
         })
       );
-      navigate(`/movie/${encodeURIComponent(movieTitle)}/${city}`); // Navigate to movie details with city
+      navigate(`/movie/${encodeURIComponent(movie.Title)}/${city}`); // Navigate to movie details with city
     } else {
-      setSelectedMovie(movieTitle); // Store selected movie title for later use
+      setSelectedMovie(movie.Title); // Store selected movie title for later use
       setShowPopup(true); // Show login popup
     }
   };
@@ -135,38 +116,11 @@ const Home = ({ searchValue, city, locationButtonRef }) => {
     }
   }, []); // Initialize swiper navigation when component mounts
 
-  //adding video clips that work on hover
-  const videoRef = useRef(null);
-  const [isHovered, setIsHovered] = useState(false); 
-
-const handleMouseEnter = () => {
-  setIsHovered(true); 
-  if (videoRef.current) {
-    console.log("mc")
-    videoRef.current.play(); // Play video on hover
-  }
-};
-
-const handleMouseLeave = () => {
-  setIsHovered(false);
-  if (videoRef.current) {
-    console.log("mo")
-    videoRef.current.pause(); // Pause video on hover out
-    videoRef.current.currentTime = 0; // Reset video to the start
-  }
-};
-  // const toggleMute = () => {
-  //   if (videoRef.current) {
-  //     videoRef.current.muted = !isMuted;
-  //     setIsMuted(!isMuted);
-  //   }
-  // };
-
   return (
     <div className="min-h-[100vh]">
       
       {/* Movies Carousel */}
-      <div className="movies-carousel p-4 m-2 border-t-2">
+      <div className="movies-carousel relative p-4 m-2 border-t-2">
         <h2 className="text-xl font-bold mb-4 pl-4">Recommended Movies</h2>
         <Swiper
           ref={swiperRef}
@@ -192,7 +146,7 @@ const handleMouseLeave = () => {
             <SwiperSlide key={movie.imdbID}>
               <div
                 className="flex flex-col items-center gap-2 w-full pt-4 p-2 cursor-pointer relative"
-                onClick={() => handleMovieClick(movie.Title)} // On movie click
+                onClick={() => handleMovieClick(movie)} // On movie click
                
               >
 
@@ -200,8 +154,7 @@ const handleMouseLeave = () => {
                   className={`rounded-xl shadow-lg w-[320px] h-[400px] object-cover transform transition-transform duration-300  hover:scale-105 hover:shadow-2xl`} 
                   src={movie.Poster}
                   alt={movie.Title}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
+                  loading="lazy"
                 />
                 <h3 className="pl-3 text-lg font-semibold text-left w-full">
                   {movie.Title}
@@ -252,12 +205,13 @@ const handleMouseLeave = () => {
                 <SwiperSlide key={movie.imdbID}>
                   <div
                     className="flex flex-col items-center gap-2 w-full pt-4 p-2 cursor-pointer"
-                    onClick={() => handleMovieClickCity(movie.Title)} // On movie click
+                    onClick={() => handleMovieClickCity(movie)} // On movie click
                   >
                     <img
                       className="rounded-xl shadow-lg w-[320px] h-[400px] object-cover transform transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
                       src={movie.Poster}
                       alt={movie.Title}
+                      loading="lazy"
                     />
                     <h3 className="pl-3 text-lg font-semibold text-left w-full">
                       {movie.Title}
@@ -300,7 +254,7 @@ const handleMouseLeave = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 backdrop-filter backdrop-blur-sm">
           <div className="bg-white rounded-lg shadow-lg p-6 w-96">
             <h3 className="text-lg font-semibold mb-4">
-              You need to log in to view details for "{selectedMovie}".
+              You need to log in to view details for &quot;{selectedMovie}&quot;.
             </h3>
             <div className="flex justify-between">
               <button

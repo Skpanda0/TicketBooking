@@ -23,9 +23,15 @@ const validateBookingDetails = (bookingDetails) => {
   }
 };
 
+const { keyid, keysecret } = process.env;
+
+if (!keyid || !keysecret) {
+  console.warn('⚠️ Razorpay credentials are missing. Add keyid and keysecret to backend/.env before booking seats.');
+}
+
 const razorpayInstance = new Razorpay({
-  key_id: 'rzp_test_eWD6xZRsShtFEb', // Replace with your Razorpay Key ID
-  key_secret: 'LsMXvaSaKAURbZGEKxEYEFw8', // Replace with your Razorpay Key Secret
+  key_id: keyid,
+  key_secret: keysecret,
 });
 
 router.post('/api/reserve-seats', async (req, res) => {
@@ -81,7 +87,7 @@ router.post('/api/verify-payment', async (req, res) => {
     }
 
     const generatedSignature = crypto
-      .createHmac('sha256', 'LsMXvaSaKAURbZGEKxEYEFw8')
+      .createHmac('sha256', keysecret)
       .update(`${razorpay_order_id}|${razorpay_payment_id}`)
       .digest('hex');
 

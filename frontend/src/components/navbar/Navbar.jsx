@@ -1,50 +1,45 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/logo.jpg";
 import Mumbai from "../../assets/mumbai.png";
 import Hyderabad from "../../assets/hyd.png";
 import Bengaluru from "../../assets/bang.png";
 import Delhi from "../../assets/ncr.png";
 import Berhampur from "../../assets/pune.png";
-import user from "../../assets/user.png"
 
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
-import { addMovie } from "../../redux/movieDataSlice";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaRegUserCircle } from "react-icons/fa";
+import { CITIES } from "../../constants/cities";
+
+const cityImg = {
+  Mumbai: Mumbai,
+  Delhi: Delhi,
+  Bengaluru: Bengaluru,
+  Hyderabad: Hyderabad,
+  Berhampur: Berhampur,
+};
 
 // Navbar component, responsible for search, city selection, and user account features
-const Navbar = ({ onSearch, onCity, locationButtonRef }) => {
+const Navbar = ({ onSearch = () => {}, onCity = () => {}, locationButtonRef, city = "" }) => {
   const [searchValue, setSearchValue] = useState(""); // State to track search input value
   const [showDropdown, setShowDropdown] = useState(false); // State to toggle city dropdown visibility
   const [showAccount, setShowAccount] = useState(false); // State to toggle account dropdown visibility
-  const [cities, setCities] = useState([ // List of cities for dropdown
-    "Mumbai",
-    "Delhi",
-    "Bengaluru",
-    "Hyderabad",
-    "Berhampur",
-  ]);
-  const [activeCity, setActiveCity] = useState(''); // State to track selected city
-
-  // Mapping cities to respective images
-  const cityImg = {
-    Mumbai: Mumbai,
-    Delhi: Delhi,
-    Bengaluru: Bengaluru,
-    Hyderabad: Hyderabad,
-    Berhampur: Berhampur,
-  };
+  const [activeCity, setActiveCity] = useState(city); // State to track selected city
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // Check if the user is logged in
   const userId = useSelector((state) => state.auth.userId); // Get user ID from Redux state
   const navigate = useNavigate();
 
+  useEffect(() => {
+    setActiveCity(city || "");
+  }, [city]);
+
   // Toggle city dropdown visibility
   const toggleDropdown = () => {
-    setShowDropdown(!showDropdown); // Toggle the dropdown visibility
+    setShowDropdown((isOpen) => !isOpen); // Toggle the dropdown visibility
     setShowAccount(false); // Close account dropdown if open
   };
 
@@ -58,13 +53,11 @@ const Navbar = ({ onSearch, onCity, locationButtonRef }) => {
   const handleCity = (city) => {
     setActiveCity(city); // Set the selected city
     onCity(city); // Pass the selected city to the parent component
-    // dispatch(addMovie({ location: city, })); // Optional: add the city data to the Redux store (commented out)
     setShowDropdown(false); // Close the dropdown after city selection
-    // console.log(city); // Log the selected city (commented out)
   };
 
   return (
-    <div className="md:w-[100%] flex md:justify-between justify-center p-2 sm:ml-0 ml-0">
+    <div className="w-full flex md:justify-between justify-center p-2 sm:ml-0 ml-0">
       {/* Left side - Logo and Search */}
       <div className="flex w-full sm:gap-5 gap-1 items-center">
         {/* Logo */}
@@ -97,36 +90,36 @@ const Navbar = ({ onSearch, onCity, locationButtonRef }) => {
       <div className="flex sm:gap-3 gap-1 justify-center items-center md:w-1/5 sm:mr-9 mr-2">
         {/* Location Dropdown */}
         <div>
-          <div className="relative bg-gray-800 text-white flex justify-between items-center rounded-full">
+          <div className="relative flex justify-between items-center rounded-full">
             {/* Dropdown Trigger */}
             <div className="relative">
-              <div className="hover:bg-red-600 hover:text-white hover:rounded-xl">
+              <div>
                 <button
                   ref={locationButtonRef}
                   onClick={toggleDropdown} // Toggle location dropdown visibility
-                  className="px-3 py-2 bg-white text-black overflow-hidden min-w-[90px] h-[33px] flex items-center justify-center gap-2"
+                  className="px-3 py-2 bg-white text-black border border-gray-300 rounded-full min-w-[112px] max-w-[145px] h-10 flex items-center justify-center gap-2 shadow-sm hover:border-red-500 hover:text-red-500 transition"
                 >
-                  <FaLocationDot className="h-10" />
-                  {activeCity === '' ? "Location" : activeCity} {/* Display active city or "location" */}
+                  <FaLocationDot className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{activeCity === '' ? "Location" : activeCity}</span>
                 </button>
               </div>
 
               {/* Dropdown Menu */}
               {showDropdown && (
-                <div className="absolute top-full mt-3 right-0 sm:w-96 w-[250px] bg-white text-black shadow-2xl rounded-lg p-4 z-50 border-[3px] border-gray-200 ">
+                <div className="absolute top-full mt-3 right-0 sm:w-96 w-[min(92vw,250px)] bg-white text-black shadow-2xl rounded-lg p-4 z-50 border-[3px] border-gray-200">
                   {/* Popular Cities Section */}
                   <div>
                     <h3 className="font-semibold mb-2">Popular Cities</h3>
                     <div className="grid grid-cols-2 gap-4 mt-3">
-                      {cities.map((city) => (
+                      {CITIES.map((city) => (
                         <button
                           onClick={() => handleCity(city)} // Select city from dropdown
                           key={city}
                           className={`flex flex-col items-center text-sm ${activeCity === city ? 'text-red-500' : 'text-gray-700'} hover:text-red-500`}
                         >
                           {/* City Icon */}
-                          <div className="w-10 h-10 bg-gray-200 rounded-full mb-2">
-                            <img className="bg-red-500" src={cityImg[city]} alt={city} />
+                          <div className="w-10 h-10 bg-gray-200 rounded-full mb-2 overflow-hidden">
+                            <img className="w-full h-full object-cover" src={cityImg[city]} alt={city} />
                           </div>
                           {city}
                         </button>
@@ -135,7 +128,7 @@ const Navbar = ({ onSearch, onCity, locationButtonRef }) => {
                     <div className="flex justify-center items-center">
                       <button
                         className="border border-transparent hover:border-red-500 px-2 py-1 rounded-lg"
-                        onClick={() => { setShowDropdown(!showDropdown) }} // Close the dropdown
+                        onClick={() => { setShowDropdown(false) }} // Close the dropdown
                       >
                         Close
                       </button>
@@ -154,7 +147,7 @@ const Navbar = ({ onSearch, onCity, locationButtonRef }) => {
               <button
                 className="flex items-center gap-2"
                 onClick={() => {
-                  setShowAccount(!showAccount); // Toggle account dropdown visibility
+                  setShowAccount((isOpen) => !isOpen); // Toggle account dropdown visibility
                   setShowDropdown(false); // Close city dropdown if open
                 }}
               >

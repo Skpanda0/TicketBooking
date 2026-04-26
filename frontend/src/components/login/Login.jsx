@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'; // Import necessary hooks from React
+import { useState, useRef } from 'react'; // Import necessary hooks from React
 import axios from 'axios'; // Import axios for HTTP requests
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for page navigation
 import { useDispatch } from 'react-redux'; // Import useDispatch to dispatch actions to Redux store
@@ -19,7 +19,6 @@ const LoginPage = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Refs for form input validation and focus management
@@ -28,8 +27,8 @@ const LoginPage = () => {
 
   // Validate if either email or phone is filled and correct format
   const validateInput = () => {
-    const email = emailRef.current.value;
-    const phone = phoneRef.current.value;
+    const email = emailRef.current.value.trim();
+    const phone = phoneRef.current.value.trim();
 
     if (!email && !phone) {
       toast.error('Please enter either an email or a phone number.');
@@ -58,6 +57,7 @@ const LoginPage = () => {
 
   // Handle form submission to send OTP
   const onSubmit = async () => {
+    if (loading) return;
     if (!validateInput()) return; // Check if input is valid
 
     setLoading(true); // Set loading state to true
@@ -92,6 +92,7 @@ const LoginPage = () => {
 
   // Handle OTP verification
   const handleVerify = async () => {
+    if (loading) return;
     if (!validateOtp()) return; // Check if OTP is valid
 
     const loadingToastId = toast.loading('Loading...'); // Show loading toast
@@ -125,18 +126,6 @@ const LoginPage = () => {
     }
 };
 
-  // Listen for Enter key press to submit the form (either for OTP or phone/email submission)
-  useEffect(() => {
-    const handleEnter = (e) => {
-      if (e.key === 'Enter') {
-        otpSent ? handleVerify() : onSubmit(); // Call appropriate function based on OTP state
-      }
-    };
-
-    document.addEventListener('keydown', handleEnter); // Attach event listener for keydown
-    return () => document.removeEventListener('keydown', handleEnter); // Cleanup the listener on component unmount
-  }, [otpSent, email, phone, otp]); // Dependencies for re-run if any of these change
-
   return (
     <div
       className="relative w-[100vw] h-[100vh] flex justify-center items-center bg-cover bg-center"
@@ -157,6 +146,7 @@ const LoginPage = () => {
                 ref={otpRef}
                 className='text-gray-200 bg-transparent focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-none border border-gray-300 rounded-xl p-2 w-full'
                 type="text"
+                inputMode="numeric"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)} // Update OTP value on change
                 minLength={4}
@@ -170,6 +160,7 @@ const LoginPage = () => {
                 color="black"
                 speed="5s"
                 onClick={handleVerify}
+                disabled={loading}
               >
                 Verify
               </StarBorder>
@@ -197,6 +188,7 @@ const LoginPage = () => {
                   <input
                     ref={phoneRef}
                     type="tel"
+                    inputMode="numeric"
                     placeholder="Enter phone number"
                     className='text-gray-200 bg-transparent focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-none border border-gray-300 rounded-xl p-2 w-full'
                     value={phone}
@@ -210,6 +202,7 @@ const LoginPage = () => {
                   color="white"
                   speed="3s"
                   onClick={onSubmit}
+                  disabled={loading}
                 >
                   Submit
                 </StarBorder>

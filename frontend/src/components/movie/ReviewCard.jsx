@@ -1,4 +1,3 @@
-import React from "react"; // Importing React
 import user from "../../assets/user.png"; // Importing the default user image
 
 const ReviewCard = ({ actor, detail, name }) => {

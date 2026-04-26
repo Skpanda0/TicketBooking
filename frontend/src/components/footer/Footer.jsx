@@ -1,11 +1,10 @@
-import React from "react";
-import logo from "../../assets/logo.jpg"
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { FaGithub, FaInstagram, FaFacebook } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
-  const userId = localStorage.getItem('userId'); // Retrieve user ID from localStorage
+  const userId = useSelector((state) => state.auth.userId);
   const navigate = useNavigate(); // Navigate to different routes
 
   return (
@@ -17,20 +16,14 @@ const Footer = () => {
             <p className="text-lg font-semibold">List your Show</p>
             <p className="text-sm">
               Got a movie show? Partner with us & get listed on 
-              <Link
-                onClick={() => {
-                  userId
-                    ? navigate(`/home/${userId}`) // If user is logged in, navigate to their home
-                    : navigate("/"); // Otherwise, navigate to the home page
-                }}
-                className="text-red-500">
+              <Link to={userId ? `/home/${userId}` : "/"} className="text-red-500">
                 MovieBooking
               </Link>
             </p>
           </div>
           {/* Button to navigate to the help page */}
           <button
-            onClick={() => navigate(`/${userId}/help`)} // Navigate to the help page
+            onClick={() => navigate(userId ? `/${userId}/help` : "/login")} // Navigate to the help page
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-pink-600">
             Contact today!
           </button>

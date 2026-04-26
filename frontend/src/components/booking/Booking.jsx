@@ -1,54 +1,53 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { fetchHalls } from "../../redux/bookingSlice";
-import { useDispatch } from "react-redux";
 import { bookData } from "../../redux/seatSlice";
 import Tippy from "@tippyjs/react";
+
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const monthName = [
+  "jan",
+  "feb",
+  "mar",
+  "apr",
+  "may",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "oct",
+  "nov",
+  "dec",
+];
 
 const Booking = () => {
   const navigate = useNavigate();
   const { movieName, city } = useParams(); // Get movie name and city from URL params
   const info = useSelector((state) => state.movieData.movieInfo); // Fetch movie info from the redux store
   const dispatch = useDispatch();
-  const { halls } = useSelector((state) => state.booking); // Fetch halls data from the redux store
+  const { halls, status } = useSelector((state) => state.booking); // Fetch halls data from the redux store
   const [date, setDate] = useState(null); // State to manage selected date
 
-  // Prepare the next 7 days (datesArray) for date selection
-  const today = new Date();
-  const currentHours = today.getHours(); // Get current hour
-  const currentMinutes = today.getMinutes(); // Get current minute
-
-  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const monthName = [
-    "jan",
-    "feb",
-    "mar",
-    "apr",
-    "may",
-    "jun",
-    "jul",
-    "aug",
-    "sep",
-    "oct",
-    "nov",
-    "dec",
-  ];
-  const datesArray = [];
-
   // Loop to generate the next 7 days
-  for (let i = 0; i < 7; i++) {
-    const futureDate = new Date(today);
-    futureDate.setDate(today.getDate() + i); // Increment days
-    const day = String(futureDate.getDate()).padStart(2, "0");
-    const dayName = daysOfWeek[futureDate.getDay()];
-    const name = monthName[futureDate.getMonth()];
-    datesArray.push({ date: day, month: name, day: dayName });
-  }
+  const datesArray = useMemo(() => {
+    const today = new Date();
+
+    return Array.from({ length: 7 }, (_, index) => {
+      const futureDate = new Date(today);
+      futureDate.setDate(today.getDate() + index); // Increment days
+      const day = String(futureDate.getDate()).padStart(2, "0");
+      const dayName = daysOfWeek[futureDate.getDay()];
+      const name = monthName[futureDate.getMonth()];
+      return { date: day, month: name, day: dayName };
+    });
+  }, []);
 
   // Fetch halls data whenever movieName or city changes
   useEffect(() => {
+    if (!city || !movieName) return;
+
     const loadingToastId = toast.loading("Loading...");
     dispatch(fetchHalls({ city, movieName }))
       .unwrap()
@@ -59,7 +58,7 @@ const Booking = () => {
       .catch(() => {
         toast.error("Failed to load halls.", { id: loadingToastId });
       });
-  }, [movieName, dispatch]);
+  }, [city, movieName, dispatch]);
 
   // Handle booking click
   const handleBookingClick = (timing, hall) => {
@@ -82,11 +81,14 @@ const Booking = () => {
         month: date.month,
       })
     );
-    navigate(`/movie/${movieName}/${city}/booking/seat`); // Navigate to seat selection page
+    navigate(`/movie/${encodeURIComponent(movieName)}/${city}/booking/seat`); // Navigate to seat selection page
   };
 
   // Check if the time is in the past (disabled) for today's date
   const isTimeDisabled = (time, selectedDate) => {
+    const today = new Date();
+    const currentHours = today.getHours(); // Get current hour
+    const currentMinutes = today.getMinutes(); // Get current minute
     const [hours, minutes] = time
       .split(/[:\s]/)
       .map((t, i) => (i < 2 ? parseInt(t, 10) : t)); // Convert time to 24-hour format
@@ -144,6 +146,10 @@ const Booking = () => {
 
         <div className="flex flex-col flex-wrap px-4 gap-4 border-2 py-4 border-gray-200 m-4 bg-white rounded-xl">
           {/* Display halls and show available timings */}
+          {halls.length === 0 && status !== "loading" && (
+            <p className="text-sm text-gray-500">No halls found for this movie and city.</p>
+          )}
+
           {halls.map((hall, index) => (
             <div key={index} className="flex flex-wrap">
               <span className="font-[400] w-1/3">{hall.name}</span>

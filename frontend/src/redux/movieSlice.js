@@ -1,27 +1,27 @@
 // Import necessary functions from Redux Toolkit
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { MOVIE_TITLES } from "../constants/cities";
 
 // Async thunk to fetch movies from OMDB API
-export const fetchMovies = createAsyncThunk("movies/fetchMovies", async (_, { getState, rejectWithValue }) => {
+export const fetchMovies = createAsyncThunk("movies/fetchMovies", async (_, { rejectWithValue }) => {
   const apiKey = import.meta.env.VITE_API_KEY;  // API key for OMDB API
-  const movieTitles = [
-    'Pushpa: The Rule - Part 2', 'RRR', 'The Batman', 'Vanvaas', 'Jailer', 'Mufasa: The Lion King', 
-    'Marco', 'Solo Leveling: ReAwakening', 'Demon Slayer: Kimetsu no Yaiba - The Movie: Mugen Train', 
-    'Jujutsu Kaisen 0', 'Daman'
-  ];
+
+  if (!apiKey) {
+    return rejectWithValue("OMDB API key is missing");
+  }
 
   try {
     // Fetch data for all movie titles in parallel using Promise.all
     const fetchedMovies = await Promise.all(
-      movieTitles.map(async (title) => {
+      MOVIE_TITLES.map(async (title) => {
         const response = await fetch(
           `https://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(title)}`
         );
         return response.json(); // Return the parsed JSON response for each movie
       })
     );
-    return fetchedMovies; // Return the list of movies when successful
-  } catch (error) {
+    return fetchedMovies.filter((movie) => movie?.Response !== "False" && movie?.Title); // Return only usable movie data
+  } catch {
     return rejectWithValue("Failed to fetch movies");  // Return a failure message in case of an error
   }
 });
