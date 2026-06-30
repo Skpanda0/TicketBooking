@@ -125,7 +125,7 @@ create a .env file in your frontend folder and add this variables
 
 Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
 
-### Credits [DrivoXd](https://github.com/DrivoXd) [subhk02](https://github.com/subhk02).
+### Credits [subhk02](https://github.com/subhk02).
 
 
 ## 📬 Contact
